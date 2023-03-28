@@ -3,7 +3,13 @@
         <div class='menu'>
         <div class="menu_logotype"> <h1 class="menu_logotype_text">Logotype</h1></div>
         <div class="menu_search"><input class="menu_search_input" type="text" placeholder="      Найти..."></div>
-        <div class="menu_services" @click="service"><p >Все услуги</p></div>
+        <div class="menu_services" @click="service">
+          <router-link to="/AllServicesView"
+                  custom
+                  v-slot="{href, navigate}"
+                  ><p :href="href" @click="navigate">Все услуги</p>
+          </router-link>      
+        </div>
         <div class="menu_addServices"><router-link to="/addView"
                   custom
                   v-slot="{href, navigate}"
@@ -16,13 +22,13 @@
             <div   @mouseover="showMenu = true" @mouseleave="showMenu = false" class="menu_profile_avatar">
               <div v-if="showMenu" class="vertical-menu">
                 <ul>
-                  <router-link to="/LoginView"
+                  <router-link to="/LoginView" 
                   custom
                   v-slot="{href, navigate}"
                   >
                     <li><a :href="href" @click="navigate">{{name || `Войти`}}</a></li>
                   </router-link>
-                  <li><a href="#" @click.prevent="logout">Выйти</a></li>
+                  <li><a href="#" @click="logout">Выйти</a></li>
                 </ul>
               </div>
             </div>
@@ -58,11 +64,9 @@
     },
     computed: {
       name(){
-        console.log(this.$store.getters.info.name)
         return this.$store.getters.info.name
       },
       service(){
-        console.log(this.$store.getters.serviceInfo.service)
         return this.$store.getters.info.service
       }
     },

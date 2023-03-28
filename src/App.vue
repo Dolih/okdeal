@@ -12,7 +12,6 @@ import mainLayout from './layouts/mainLayout.vue';
 export default{
   computed: {
     layout() {
-      console.log()
       return (this.$route.meta.layout || 'empty') + '-layout'
     }
   },

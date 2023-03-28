@@ -1,8 +1,9 @@
 import firebase from "firebase/app"
+import "firebase/storage"
 /* eslint-disable */
 export default{
     actions: {
-        async addService({dispatch}, {service, trade, description, city}){
+        async addService({dispatch}, {service, trade, description, city, imageURL, selectedCategory}){
             try{
                 const uid = await dispatch('getUid')
                 var serviceRef = firebase.database().ref(`users/${uid}/services`)
@@ -11,9 +12,10 @@ export default{
                 
 
                 await firebase.database().ref(`/users/${uid}/services/${serviceId}`).set({
-                    service, trade, description, city
-                })//создать переменную котора будет хранить ид услуги
+                    service, trade, description, city, imageURL, selectedCategory
+                })
             }
+
             catch(error){
                 throw error
             }

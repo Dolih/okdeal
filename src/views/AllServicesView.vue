@@ -1,199 +1,84 @@
 <template>
-      <div  class="content_categories">
-        <div ref="myDiv" class="content_categories_el"
-        v-bind:class="{active_categories: item.isActive}, {active_category: item.isActiveCt}"
-
-        @mouseover="select_ad(item)"
-        @mouseout="unselect_ad(item)"
-        @click="viewCtgry(item)"
-        :item="item"
-        v-for="item in allCategories"
-        >
+    <div class="content_popular">
+      <div class="content_popular_header">
+        🔥 Все объявления 
+      </div>
+      <div class="content_popular_ads"
+      >
         
-          <img class="content_categories_el_img" :src="item.img">
-          <p>{{item.nameCt}}</p>
-        </div>
-      </div>
-      <div class="content_popular">
-        <div class="content_popular_header">
-          🔥 Популярные объявления 
-        </div>
-        <div class="content_popular_ads"
-        > 
-            <div class="content_popular_ad"
-            :item="item"
-            v-if="slctCtgry"
-            v-for="item in services" :key="item.id"
-            v-bind:class="{active_ad: item.isActive}"
-            @mouseover="select_ad(item)"
-            @mouseout="unselect_ad(item)"
+          <div class="content_popular_ad"
+          :item="item"
+          v-for="item in allServices" :key="item.id"
+          v-bind:class="{active_ad: item.isActive}"
+          @mouseover="select_ad(item)"
+          @mouseout="unselect_ad(item)"
+          >
+            <div class="ad_name"
+            v-bind:class="{active_ad_name: item.isActive}"
             >
-              <div class="ad_name"
-              v-bind:class="{active_ad_name: item.isActive}"
-              >
-                <div class="ad_name_text"
-                v-bind:class="{active_name_text: item.isActive}"
-                > {{ item.srvName }}</div>
+              <div class="ad_name_text"
+              v-bind:class="{active_name_text: item.isActive}"
+              > {{ item.service }}</div>
+            </div>
+            <img class="ad_img" 
+            src='../img/clothes.jpeg' 
+            v-bind:class="{ad_display: !item.isActive} "
+            
+            />
+            <div class="ad_hint"
+            v-bind:class="{ad_display: item.isActive}"
+            >
+              <div class="ad_hint_header">Услуги взамен:</div>
+              <div class="ad_hint_text"
+              > 
+                {{item.trade}} 
               </div>
-              <img class="ad_img" 
-              :src="item.srvImg" 
-              v-bind:class="{ad_display: !item.isActive} "
-              
-              />
-              <div class="ad_hint"
-              v-bind:class="{ad_display: item.isActive}"
-              >
-                <div class="ad_hint_header">Услуги взамен:</div>
-                <div class="ad_hint_text"
-                :item='i' v-for='i in item.return_services ' :key="i"
-                > 
-                  {{i}} 
-                </div>
-              </div>
-              <div class="ad_info"
-              v-bind:class="{active_ad_info: item.isActive}"
-              >
-                <div class="ad_date"> {{ item.time }} </div>
-              </div> 
-              <div class="ad_like"
-              v-bind:class="{active_ad_like: item.isActive}"
-              >
-                <img class="ad_like_img" src="../img/like.svg">
-              </div>
-
+            </div>
+            <div class="ad_info"
+            v-bind:class="{active_ad_info: item.isActive}"
+            >
+              <div class="ad_date"> {{ item.time }} </div>
+            </div> 
+            <div class="ad_like"
+            v-bind:class="{active_ad_like: item.isActive}"
+            >
+              <img class="ad_like_img" src="../img/like.svg">
             </div>
 
-            <div class="content_popular_ad"
-            :item="item"
-            v-else
-            v-for="item in service"
-            v-bind:class="{active_ad: item.isActive}"
-            @mouseover="select_ad(item)"
-            @mouseout="unselect_ad(item)"
-            >
-              <div class="ad_name"
-              v-bind:class="{active_ad_name: item.isActive}"
-              >
-                <div class="ad_name_text"
-                v-bind:class="{active_name_text: item.isActive}"
-                > {{ item.service }}</div>
-              </div>
-              <img class="ad_img" 
-              :src="item.imageURL" 
-              v-bind:class="{ad_display: !item.isActive} "
-              
-              />
-              <div class="ad_hint"
-              v-bind:class="{ad_display: item.isActive}"
-              >
-                <div class="ad_hint_header">Услуги взамен:</div>
-                <div class="ad_hint_text"
-                :item='i' v-for='i in item.return_services ' :key="i"
-                > 
-                  {{i}} 
-                </div>
-              </div>
-              <div class="ad_info"
-              v-bind:class="{active_ad_info: item.isActive}"
-              >
-                <div class="ad_date"> {{ item.time }} </div>
-              </div> 
-              <div class="ad_like"
-              v-bind:class="{active_ad_like: item.isActive}"
-              >
-                <img class="ad_like_img" src="../img/like.svg">
-              </div>
-
-            </div>
-          
-        </div>
+          </div>
+        
       </div>
+    </div>
 
 </template>
 
 <script>
 
-export default {
-  components: { 
-  },
-  data(){
-    return {
-      isActive: false,
-      isActiveCt: false,
-      slctCtgry: false,
-      services: [
-        
-      ],
-      
-      
-      
-      }
-    
+export default{
+    data(){
+        return {
+
+        }
     },
-    
     async mounted (){
       this.$store.dispatch('allServices')
-      this.$store.dispatch('allCategories')
-
     },
-
     computed: {
-      service(){
+      allServices(){
         return this.$store.getters.serviceInfo
-      },
-      allCategories() {
-        return this.$store.getters.categories
       }
     },
-  
-  methods: {
+    methods: {
     select_ad(item) {
       item.isActive = true
-
     },
     unselect_ad(item) {
       item.isActive = false
-
-      console.log(item)
-
-      
-    },
-    viewCtgry(item){
-      item.isActiveCt = true
-      item.isActive = false
-      this.slctCtgry = true
-          const myDiv = this.$refs.myDiv;
-          for(let i = 0; myDiv.length > i; i++){
-            if (myDiv[i].classList.contains('active_category')) {
-              myDiv[i].classList.remove('active_category')
-
-
-            } else {
-            } 
-          }
-          console.log(item)
-
-      
-      this.services = []
-      
-      for(let i = 0; this.service.length > i; i++){
-        if(item.nameCt == this.service[i].selectedCategory){
-          
-          let srv = {
-            srvName: this.service[i].service,
-            srvCtgry: this.service[i].selectedCategory,
-            srvImg: this.service[i].imageURL
-          }
-          this.services.push(srv)
-          
-        } else if(item.nameCt=="Все объявления"){this.slctCtgry = false}
-      }
     }
   }
+
 }
-
 </script>
-
 
 <style>
 ::-webkit-scrollbar {
@@ -227,13 +112,6 @@ export default {
     background-color: #E98074;
     animation-name: animation_active_categories;
     animation-duration: 400ms;
-  }
-  .no_active_category{
-    background-color: #D8C3A5;
-  }
-  .active_category{
-    background-color: #E98074;
-    border-radius: 1px;
   }
   @keyframes animation_active_categories{
     0%{
