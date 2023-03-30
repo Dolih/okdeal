@@ -3,7 +3,7 @@ import "firebase/storage"
 /* eslint-disable */
 export default{
     actions: {
-        async addService({dispatch}, {service, trade, description, city, imageURL, selectedCategory}){
+        async addService({dispatch}, {service, trade, description, city, imageURL, selectedCategory, date}){
             try{
                 const uid = await dispatch('getUid')
                 var serviceRef = firebase.database().ref(`users/${uid}/services`)
@@ -12,7 +12,7 @@ export default{
                 
 
                 await firebase.database().ref(`/users/${uid}/services/${serviceId}`).set({
-                    service, trade, description, city, imageURL, selectedCategory
+                    service, trade, description, city, imageURL, selectedCategory, date
                 })
             }
 

@@ -2,14 +2,25 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <span class="card-title">Обмен услугами</span>
       <div class="input-field">
         <input
             id="email"
             type="text"
             v-model.trim="email"
+            required
         >
         <label for="email">Email</label>
+        
+      </div>
+      <div class="input-field">
+        <input
+            id="phone"
+            type="text"
+            v-model.trim="phone"
+            required
+        >
+        <label for="phone">Номер телефона</label>
         
       </div>
       <div class="input-field">
@@ -17,6 +28,7 @@
             id="password"
             type="password"
             v-model.trim="password"
+            required
         >
         <label for="password">Пароль</label>
         
@@ -26,13 +38,14 @@
             id="name"
             type="text"
             v-model.trim="name"
+            required
         >
         <label for="name">Имя</label>
         
       </div>
       <p>
         <label>
-          <input type="checkbox" v-model="agree" />
+          <input type="checkbox" v-model="agree" required/>
           <span>С правилами согласен</span>
         </label>
       </p>

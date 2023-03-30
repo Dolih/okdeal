@@ -3,7 +3,7 @@ import firebase from 'firebase/app'
 export default {
     state: {
         service: {},
-        serviceInfo: []
+        serviceInfo: [],
     },
     mutations: {
         setService(state, service){
@@ -14,6 +14,7 @@ export default {
         },
         setServiceIds(state, serviceInfo){
             state.serviceInfo = serviceInfo
+
         }
         
     },
@@ -25,10 +26,12 @@ export default {
             const snapshot = await servicesRef.once('value'); 
             const services = snapshot.val();
             const serviceIds = Object.keys(services);
-            let serviceInfo = []                
+            let serviceInfo = []     
+            let serviceId = ''           
             for(let i = 0; i<serviceIds.length; i++){
                 let serviceInf = (await firebase.database().ref(`/users/${uid}/services/${serviceIds[i]}`).once('value')).val()
-                serviceInfo.push(serviceInf);
+                serviceInfo.push(serviceInf)
+
             }
             commit('setServiceIds', serviceInfo)  
         },
@@ -46,7 +49,10 @@ export default {
                 const serviceIds = Object.keys(services)
                 for(let b = 0; b<serviceIds.length; b++){
                     let serviceInf = (await firebase.database().ref(`/users/${usersIds[i]}/services/${serviceIds[b]}`).once('value')).val()
-                    serviceInfo.push(serviceInf);
+                    serviceInf.serviceId = serviceIds[b]
+                    serviceInf.userId = usersIds[i]
+
+                    serviceInfo.push(serviceInf)
                     }
             }
             commit('setServiceIds', serviceInfo)  
@@ -55,6 +61,7 @@ export default {
     },
     getters: {
         service: $ => $.service,
-        serviceInfo: $ => $.serviceInfo
+        serviceInfo: $ => $.serviceInfo,
+
     }
 }

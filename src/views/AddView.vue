@@ -3,26 +3,26 @@
 
       <form @submit.prevent="submitHandler">
         <label for="service">Услуга:</label>
-        <input type="text" id="service" v-model="service" required>
+        <input  type="text" id="service" v-model="service" required>
         
         <label for="trade">Услуги взамен:</label>
-        <input type="text" id="trade" v-model="trade">
+        <input type="text" id="trade" v-model="trade" required>
         
         <label for="description">Описание:</label>
-        <textarea id="description" v-model="description"></textarea>
+        <textarea id="description" v-model="description" required></textarea>
         
         <label for="city">Город:</label>
         <input type="text" id="city" v-model="city" required>
 
         <label for="category">Категория:</label>
-    <select id="categories" v-model="selectedCategory">
-      <option disabled value="">Выберите категорию</option>
-      <option :item="item" v-for="item in allCategories" >{{ item.nameCt }}</option>
-    </select>
+        <select id="categories" v-model="selectedCategory" required>
+          <option disabled value="">Выберите категорию</option>
+          <option :item="item" v-for="item in allCategories" >{{ item.nameCt }}</option>
+        </select>
 
         <br>
         <label for="image">Изображение:</label>
-        <input type="file" id="image" ref="image" @change="handleImageChange">
+        <input type="file" id="image" ref="image" @change="handleImageChange" required>
         
         <button type="submit" >Отправить</button>
       </form>
@@ -53,7 +53,6 @@
     },
     computed: {
       allCategories() {
-        console.log(this.$store.getters.categories)
         return this.$store.getters.categories
       }
     },
@@ -76,7 +75,9 @@
           description: this.description,
           city: this.city,
           selectedCategory: this.selectedCategory,
-          imageURL: ""
+          imageURL: "",
+          date: new Date()
+
           
         }
         try {

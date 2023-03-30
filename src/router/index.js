@@ -30,6 +30,12 @@ const routes = [
     name: 'AddView',
     meta: {layout: 'empty'},
     component: () => import('../views/AddView.vue')
+  },
+  {
+    path: '/ServiceView/:serviceId',
+    name: 'ServiceView',
+    meta: {layout: 'main'},
+    component: () => import('../views/ServiceView.vue')
   }
   
 ]
