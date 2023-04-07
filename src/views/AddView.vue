@@ -14,6 +14,9 @@
         <label for="city">Город:</label>
         <input type="text" id="city" v-model="city" required>
 
+        <label for="phone">Номер телефона:</label>
+        <input type="tel" id="phone"  :value='`+7 ${telPhone.phone}`' required readonly>
+
         <label for="category">Категория:</label>
         <select id="categories" v-model="selectedCategory" required>
           <option disabled value="">Выберите категорию</option>
@@ -45,15 +48,22 @@
         imageFile: null,
         imageLink: "", 
         selectedCategory: "",
+        phone:'',
+        today: new Date(),
         
       
     }),
     async mounted (){
       this.$store.dispatch('allCategories')
+      this.$store.dispatch('fetchInfo')
+
     },
     computed: {
       allCategories() {
         return this.$store.getters.categories
+      },
+      telPhone() {
+        return this.$store.getters.info
       }
     },
     methods: {
@@ -69,6 +79,9 @@
       },
 
       async submitHandler() {
+        event.preventDefault()
+        
+
         const formData = {
           service: this.service,
           trade: this.trade,
@@ -76,7 +89,8 @@
           city: this.city,
           selectedCategory: this.selectedCategory,
           imageURL: "",
-          date: new Date()
+          phone: this.telPhone.phone,
+          addDate: `${this.today.getDate()}.${this.today.getMonth() + 1}.${this.today.getFullYear()}`
 
           
         }

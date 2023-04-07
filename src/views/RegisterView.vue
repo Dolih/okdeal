@@ -16,7 +16,8 @@
       <div class="input-field">
         <input
             id="phone"
-            type="text"
+            type="tel"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
             v-model.trim="phone"
             required
         >
@@ -82,6 +83,7 @@ export default {
     email: '',
     password: '',
     name: '',
+    phone: '',
     agree: false
   }),
   
@@ -92,7 +94,9 @@ export default {
       const formData = {
         email: this.email,
         password: this.password,
-        name: this.name
+        name: this.name,
+        phone: this.phone
+
       }
 
       try {

@@ -27,50 +27,7 @@
         v-bind:class="{active_ad: item.isActive}"
         @mouseover="select_ad(item)"
         @mouseout="unselect_ad(item)"
-        :href="href" @click=" navigate(); openServicePage(item)"
-        >
-          <div class="ad_name"
-          v-bind:class="{active_ad_name: item.isActive}"
-          >
-            <div class="ad_name_text"
-            v-bind:class="{active_name_text: item.isActive}"
-            > {{ item.srvName }}</div>
-          </div>
-          <img class="ad_img" 
-          :src="item.srvImg" 
-          v-bind:class="{ad_display: !item.isActive} "
-          
-          />
-          <div class="ad_hint"
-          v-bind:class="{ad_display: item.isActive}"
-          >
-            <div class="ad_hint_header">Услуги взамен:</div>
-            <div class="ad_hint_text"
-            :item='i' v-for='i in item.return_services ' :key="i"
-            > 
-              {{i}} 
-            </div>
-          </div>
-          <div class="ad_info"
-          v-bind:class="{active_ad_info: item.isActive}"
-          >
-            <div class="ad_date"> {{ item.time }} </div>
-          </div> 
-          <div class="ad_like"
-          v-bind:class="{active_ad_like: item.isActive}"
-          >
-            <img class="ad_like_img" src="../img/like.svg">
-          </div>
-
-        </div>
-        <div class="content_popular_ad"
-        :item="item"
-        v-else
-        v-for="item in service"
-        v-bind:class="{active_ad: item.isActive}"
-        @mouseover="select_ad(item)"
-        @mouseout="unselect_ad(item)"
-        :href="href" @click=" openServicePage(item)"
+        :href="href" @click="openServicePage(item)"
         >
           <div class="ad_name"
           v-bind:class="{active_ad_name: item.isActive}"
@@ -89,15 +46,56 @@
           >
             <div class="ad_hint_header">Услуги взамен:</div>
             <div class="ad_hint_text"
-            :item='i' v-for='i in item.return_services ' :key="i"
             > 
-              {{i}} 
+              {{item.trade}} 
             </div>
           </div>
           <div class="ad_info"
           v-bind:class="{active_ad_info: item.isActive}"
           >
-            <div class="ad_date"> {{ item.time }} </div>
+            <div class="ad_date"> {{ item.addDate }} </div>
+          </div> 
+          <div class="ad_like"
+          v-bind:class="{active_ad_like: item.isActive}"
+          >
+            <img class="ad_like_img" src="../img/like.svg">
+          </div>
+
+        </div>
+        <div class="content_popular_ad"
+        :item="item"
+        v-else
+        v-for="item in service"
+        v-bind:class="{active_ad: item.isActive}"
+        @mouseover="select_ad(item)"
+        @mouseout="unselect_ad(item)"
+        :href="href" @click="openServicePage(item)"
+        >
+          <div class="ad_name"
+          v-bind:class="{active_ad_name: item.isActive}"
+          >
+            <div class="ad_name_text"
+            v-bind:class="{active_name_text: item.isActive}"
+            > {{ item.service }}</div>
+          </div>
+          <img class="ad_img" 
+          :src="item.imageURL" 
+          v-bind:class="{ad_display: !item.isActive} "
+          
+          />
+          <div class="ad_hint"
+          v-bind:class="{ad_display: item.isActive}"
+          >
+            <div class="ad_hint_header">Услуги взамен:</div>
+            <div class="ad_hint_text"
+            > 
+              {{item.trade}} 
+            </div>
+          </div>
+          <div class="ad_info"
+          v-bind:class="{active_ad_info: item.isActive}"
+          >
+            <div class="ad_date"> {{ item.addDate }} </div>
           </div> 
           <div class="ad_like"
           v-bind:class="{active_ad_like: item.isActive}"
@@ -141,27 +139,46 @@ async mounted (){
 
 computed: {
   service(){
+    const months = [
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+      ];
+    for(let i = 0; this.$store.getters.serviceInfo.length>i; i++){
+      if (this.$store.getters.serviceInfo[i].addDate) {
+    const dateParts = this.$store.getters.serviceInfo[i].addDate.split('.');
+    const day = dateParts[0];
+    const month = months[Number(dateParts[1]) - 1];
+    this.$store.getters.serviceInfo[i].addDate = `${day} ${month}`
+  
+  }}
     return this.$store.getters.serviceInfo
-
+    
   },
-
   allCategories() {
     return this.$store.getters.categories
   },
   idService(){
     return this.$store.getters.serviceId
-
-  }
+  },
+  
 },
 
 methods: {
 select_ad(item) {
   item.isActive = true
-
 },
 unselect_ad(item) {
   item.isActive = false
-  
 },
 viewCtgry(item){
   this.slctCtgry = true
@@ -178,10 +195,18 @@ viewCtgry(item){
     if(item.nameCt == this.service[i].selectedCategory){
       this.isActiveCt = true
       let srv = {
-        srvName: this.service[i].service,
-        srvCtgry: this.service[i].selectedCategory,
-        srvImg: this.service[i].imageURL
+        userId:this.service[i].userId,
+        serviceId:this.service[i].serviceId,
+        service: this.service[i].service,
+        city: this.service[i].city,
+        description: this.service[i].description,
+        selectedCategory: this.service[i].selectedCategory,
+        imageURL: this.service[i].imageURL,
+        trade: this.service[i].trade,
+        addDate: this.service[i].addDate,
+        phone: this.service[i].phone
       }
+      console.log(this.service[i].addDate)
       item.isActiveCt = true
       this.services.push(srv)
       
@@ -198,7 +223,9 @@ openServicePage(item){
       description: item.description,
       selectedCategory: item.selectedCategory,
       imageURL: item.imageURL,
-      trade: item.trade
+      trade: item.trade,
+      addDate: item.addDate,
+      phone: item.phone
     }
   })
 
@@ -214,7 +241,9 @@ openServicePage(item){
 display: none;
 }
 
-
+body{
+  margin-top: 20px;
+}
 
 .content_categories{
 margin-top: 50px;
@@ -278,7 +307,7 @@ color: #000000;
 .content_popular_ads{
 display: grid;
 grid-template-columns: 25% 25% 25% 25%;
-grid-template-rows: 50% 50%;
+grid-template-rows: auto;
 margin-top: 20px;
 height: 100%;
 }

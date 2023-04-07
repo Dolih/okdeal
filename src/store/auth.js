@@ -12,12 +12,12 @@ export default{
             }
         },
 
-        async register({dispatch}, {email, password, name}){
+        async register({dispatch}, {email, password, name, phone}){
             try{
                 await firebase.auth().createUserWithEmailAndPassword(email, password)
                 const uid = await dispatch('getUid')
                 await firebase.database().ref(`/users/${uid}/info`).set({
-                    name: name
+                    name, phone
                 })
                 await firebase.database().ref(`/users/${uid}/services`)
             }

@@ -7,6 +7,10 @@
     <p>Обмен: {{$route.query.trade}}</p>
     <p>Город: {{$route.query.city}}</p>
     <p>Категория: {{$route.query.selectedCategory}}</p>
+    <p>Дата: {{$route.query.addDate}}</p>
+    <p>Телефон: {{$route.query.phone}}</p>
+
+
     <img 
     class="image_service" 
     :src="$route.query.imageURL">

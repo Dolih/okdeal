@@ -1,85 +1,152 @@
 <template>
     <div class="grid">
         <div class='menu'>
-        <div class="menu_logotype"> <h1 class="menu_logotype_text">Logotype</h1></div>
-        <div class="menu_search"><input class="menu_search_input" type="text" placeholder="      Найти..."></div>
-        <div class="menu_services" @click="service">
-          <router-link to="/AllServicesView"
-                  custom
-                  v-slot="{href, navigate}"
-                  ><p :href="href" @click="navigate">Все услуги</p>
-          </router-link>      
-        </div>
-        <div class="menu_addServices"><router-link to="/addView"
-                  custom
-                  v-slot="{href, navigate}"
-                  ><p :href="href" @click="navigate" class="menu_addServices_text">Добавить</p>
-                  </router-link>
-          
-        </div>
-        <div class="menu_profile">
-            
-            <div   @mouseover="showMenu = true" @mouseleave="showMenu = false" class="menu_profile_avatar">
-              <div v-if="showMenu" class="vertical-menu">
-                <ul>
-                  <router-link to="/LoginView" 
-                  custom
-                  v-slot="{href, navigate}"
-                  >
-                    <li><a :href="href" @click="navigate">{{name || `Войти`}}</a></li>
-                  </router-link>
-                  <li><a href="#" @click="logout">Выйти</a></li>
-                </ul>
+          <div class="menu_logotype"> <h1 class="menu_logotype_text">Logotype</h1></div>
+          <div class="menu_search"><input class="menu_search_input" type="text" placeholder="Найти услугу..."></div>
+          <div class="menu_services" @click="service">
+            <router-link to="/AllServicesView"
+                    custom
+                    v-slot="{href, navigate}"
+                    ><p :href="href" @click="navigate">Все услуги</p>
+            </router-link>      
+          </div>
+          <div class="menu_addServices"><router-link to="/addView"
+                    custom
+                    v-slot="{href, navigate}"
+                    ><p :href="href" @click="navigate" class="menu_addServices_text">Добавить</p>
+                    </router-link>
+          </div>
+
+          <div class="menu_profile">
+              <div   @mouseover="showMenu = true" @mouseleave="showMenu = false" class="menu_profile_avatar">
+                <div v-if="showMenu" class="vertical-menu">
+                  <ul>
+                      <li><a :href="href" @click="navigator">{{name || `Войти`}}</a></li>
+                    <li><a href="#" @click="logout">Выйти</a></li>
+                  </ul>
+                </div>
               </div>
-            </div>
-        
-        
-        </div>
+          </div>
         </div>
         
         <div class='content'>
             <RouterView/>
         </div>
+        <footer class="footer">
+  
+
+  <div class="container">
+    <div class="footer_inner">
+      <div class="c-footer">
+        <div class="layout">
+          <div class="layout_item w-50">
+            <div class="newsletter">
+              <h3 class="newsletter_title">Ищите услуги быстро и легко с помощью нашего сервиса.</h3>
+              
+            </div>
+          </div>
+
+          <div class="layout_item w-25">
+            <nav class="c-nav-tool">
+              <h4 class="c-nav-tool_title">Меню</h4>
+              <ul class="c-nav-tool_list">
+                <li>
+                  <a href="../views/HomeView" class="c-link">Главная</a>
+                </li>
+
+                <li>
+                  <a href="/pages/about-us" class="c-link">Все услуги</a>
+                </li>
+
+                <li>
+                  <a href="/blogs/community" class="c-link">Личный кабиент</a>
+                </li>
+                <li>
+                  <a href="#" class="c-link">О нас</a>
+                </li>
+              </ul>
+            </nav>
+
+          </div>
+
+          <div class="layout_item w-25">
+            <nav class="c-nav-tool">
+              <h4 class="c-nav-tool_title">Помощь</h4>
+              <ul class="c-nav-tool_list">
+
+
+                <li class="c-nav-tool_item">
+                  <a href="/pages/help" class="c-link">FAQ</a>
+                </li>
+
+                <li class="c-nav-tool_item">
+                  <a href="/pages/privacy-policy" class="c-link">Политика приватности</a>
+                </li>
+
+                <li class="c-nav-tool_item">
+                  <a href="/pages/contact" class="c-link">Контакты</a>
+                </li>
+
+                <li class="c-nav-tool_item">
+                  <a href="/LoginView" class="c-link">
+                    Войти
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+          </div>
+        </div>
+        
+      </div>
     </div>
+    <div class="footer_copyright">
+      <p>&copy; 2022 Наше название сайта.</p>
+    </div>
+  </div>
+</footer>
+    </div>
+    
 </template>
 
 <script>
-
     export default{
       data() {
-      return {
-        showMenu: false,
-        showModal: false
-      }
-      
-    } ,
-   async mounted(){
-      if(!Object.keys(this.$store.getters.info).length){
-        await this.$store.dispatch('fetchInfo')
-      }
-      this.$store.dispatch('idServices')
-      // if(!Object.keys(this.$store.getters.service).length){
-      //   await this.$store.dispatch('fetchServices')
-      // }
-    },
-    computed: {
-      name(){
-        return this.$store.getters.info.name
+        return {
+          showMenu: false,
+          showModal: false,
+        }
+      } ,
+      async mounted(){
+          if(!Object.keys(this.$store.getters.info).length){
+            await this.$store.dispatch('fetchInfo')
+          }
+          this.$store.dispatch('idServices')
+          // if(!Object.keys(this.$store.getters.service).length){
+          //   await this.$store.dispatch('fetchServices')
+          // }
       },
-      service(){
-        return this.$store.getters.info.service
+      computed: {
+        name(){
+          return this.$store.getters.info.name
+        },
+        service(){
+          return this.$store.getters.info.service
+        }
+      },
+      methods: {
+        navigator(){
+          if(this.name){
+            this.$router.push('/ServiceView')
+          } else {
+            this.$router.push('/LoginView')
+          }
+        },
+        async logout() {
+          await this.$store.dispatch('logout')
+          this.$router.push('/LoginView?message=logout')
+        }, 
       }
-    },
-    methods: {
-      async logout() {
-        await this.$store.dispatch('logout')
-        this.$router.push('/LoginView?message=logout')
-      }, 
-      
-
-      
-      
-    }
     }
 </script>
 
@@ -91,23 +158,26 @@
     
     }
     body{
+      margin-top: 20px;
       background-color: #EAE7DC;
     }
   .grid{
     display: grid;
-    grid-template-rows: 9% auto;
+    grid-template-rows: 8vh auto;
   }
   .menu{
     display: grid;
     grid-template-rows: 100%;
     grid-template-columns: 25% 41% 13% 13% 8% ;
-    background-color: #EAE7DC;
-    /* box-shadow: 0 1px 3px -2px rgb(131, 129, 123); */
+    background-color: #ffffff;
+    margin: 0 90px 0 90px;
+    border-radius: 20px;
   }
     .menu_logotype{
       display: grid;
       grid-template-columns: 100%;
       grid-template-rows: 100%;
+      text-align: center;
       align-items: center;
     }
     .menu_logotype_text{
@@ -115,7 +185,8 @@
       font-size: 1.6em;
       font-weight: bold;
       text-align: center;
-      
+            align-items: center;
+
     }
     .menu_search{
       display: grid;
@@ -125,13 +196,13 @@
     }
     .menu_search_input{
       background-color: #ffffff59;
-      width: 50%;
+      width: 60%;
       height: 50%;
       margin-left: auto;
       margin-right: auto;
-
+      text-align: center;
       border-radius: 20px;
-      border: 1px solid #E98074;
+      border: 1px solid #D8C3A5;
       font-size: 1em;
       font-weight: bold;
       color: #000000;
@@ -191,36 +262,103 @@
       width: 45px; 
       height: 45px;
       margin-left: 20%;
-      background: #ffffff;
+      background: #000000;
       border-radius: 50%;
     }
-    .vertical-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  z-index: 1;
+
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300&family=Rubik:wght@400;500;700&display=swap");
+
+:root {
+  --light: #ffffff;
+  --dark: #000;
 }
 
-.vertical-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+h3 {
+  font-family: "Noto Serif Display", serif;
+  font-size: 2.3rem;
+  font-weight: 300;
+  text-align: center;
 }
-
-.vertical-menu li {
-  margin-bottom: 8px;
-}
-
-.vertical-menu a {
-  color: #333;
+a {
   text-decoration: none;
+  color: var(--dark);
+  font-weight: 500;
+  transition: 0.3s ease-in;
+  border-bottom: 1px solid transparent;
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+}
+a:hover {
+  border-bottom: 1px solid var(--dark);
+}
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-.vertical-menu a:hover {
-  text-decoration: underline;
+.flex {
+  display: flex;
 }
+.c-nav-tool_title{
+  padding-bottom: 10px;
+}
+.footer_video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  border: none;
+}
+.footer_inner {
+  background: var(--light);
+  backdrop-filter: blur(50px);
+  border: 0.1px solid rgba(233, 232, 232, 0.208);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 1rem 0;
+}
+.footer {
+  padding: 50px 50px 20px 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+
+@media (min-width: 675px) {
+  .layout {
+    display: flex;
+    flex-wrap: nowrap;
+    column-gap: 2rem;
+  }
+  .w-50 {
+    width: 50%;
+  }
+  .w-25 {
+    width: 25%;
+  }
+}
+form {
+  position: relative;
+}
+svg {
+  margin: 0.5rem;
+}
+.c-2 {
+  margin-top: 3.5rem;
+}
+.footer_copyright {
+  color: black;
+}
+
 </style>

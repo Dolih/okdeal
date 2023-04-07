@@ -36,6 +36,12 @@ const routes = [
     name: 'ServiceView',
     meta: {layout: 'main'},
     component: () => import('../views/ServiceView.vue')
+  },
+  {
+    path: '/ChatView',
+    name: 'ChatView',
+    meta: {layout: 'main'},
+    component: () => import('../views/ChatView.vue')
   }
   
 ]
