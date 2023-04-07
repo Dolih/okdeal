@@ -1,7 +1,11 @@
 <template>
-    <div class="grid">
-        <div class='menu'>
-          <div class="menu_logotype"> <h1 class="menu_logotype_text">Logotype</h1></div>
+    <div class="grid" >
+        <div class='menu' >
+          <router-link to="/HomeView"
+                    custom
+                    v-slot="{href, navigate}">
+            <div :href="href" @click="navigate" class="menu_logotype"> <h1 class="menu_logotype_text">Logotype</h1></div>
+          </router-link>
           <div class="menu_search"><input class="menu_search_input" type="text" placeholder="Найти услугу..."></div>
           <div class="menu_services" @click="service">
             <router-link to="/AllServicesView"
@@ -18,7 +22,7 @@
           </div>
 
           <div class="menu_profile">
-              <div   @mouseover="showMenu = true" @mouseleave="showMenu = false" class="menu_profile_avatar">
+              <div   @click="showMenu = !showMenu"  class="menu_profile_avatar">
                 <div v-if="showMenu" class="vertical-menu">
                   <ul>
                       <li><a :href="href" @click="navigator">{{name || `Войти`}}</a></li>
@@ -80,7 +84,7 @@
                 </li>
 
                 <li class="c-nav-tool_item">
-                  <a href="/pages/privacy-policy" class="c-link">Политика приватности</a>
+                  <a href="/pages/privacy-policy" class="c-link">Политика конфидициальности</a>
                 </li>
 
                 <li class="c-nav-tool_item">
@@ -101,7 +105,7 @@
       </div>
     </div>
     <div class="footer_copyright">
-      <p>&copy; 2022 Наше название сайта.</p>
+      <p>&copy; 2023 Наше название сайта.</p>
     </div>
   </div>
 </footer>
@@ -154,35 +158,42 @@
 </script>
 
 <style>
-*{
+    @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300&family=Rubik:wght@400;500;700&display=swap");
+
+  *{
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat';
-    
     }
     body{
       margin-top: 20px;
       background-color: #EAE7DC;
+      font-family: 'Open Sans', sans-serif;
     }
   .grid{
     display: grid;
-    min-height: 100vh; /* Минимальная высота контейнера должна быть не меньше высоты видимой области окна браузера */
+    min-height: 100vh; 
 
   }
   .menu{
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     display: grid;
     z-index: 1000;
-    
+    position: fixed;
     width: 90%;
     height: 8vh;
     grid-template-rows: 100%;
     grid-template-columns: 25% 41% 13% 13% 8% ;
     background-color: #ffffff;
     margin-left: 5%;
-    margin-top: -6vh;
-    border-radius: 20px;
-    transition: top 0.3s;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 0 5px #37373720;
+    box-shadow: 0 0 5px #37373720;
   }
+
     .menu_logotype{
       display: grid;
       grid-template-columns: 100%;
@@ -195,7 +206,9 @@
       font-size: 1.6em;
       font-weight: bold;
       text-align: center;
-            align-items: center;
+      align-items: center;
+      cursor: pointer;
+
 
     }
     .menu_search{
@@ -214,7 +227,6 @@
       border-radius: 20px;
       border: 1px solid #D8C3A5;
       font-size: 1em;
-      font-weight: bold;
       color: #000000;
       
     }
@@ -250,6 +262,7 @@
       animation-duration: 1s;
       animation-iteration-count: infinite;
       animation-direction: alternate-reverse;
+
     }
 
     .menu_addServices_text{
@@ -258,6 +271,8 @@
       background-color: #ffffff59;
       padding: 8px;
       border-radius: 10px;
+      cursor: pointer;
+
     }
     
     .menu_profile{
@@ -276,7 +291,35 @@
       border-radius: 50%;
     }
 
-    @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300&family=Rubik:wght@400;500;700&display=swap");
+    .vertical-menu {
+  position: absolute;
+  margin-top: 20px;
+  top: 100%;
+  left: -25px;
+  min-width: 60px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  z-index: 1;
+  box-shadow: 0 0 5px #37373720;
+  box-shadow: 0 0 5px #37373720;
+}
+.vertical-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.vertical-menu li {
+  margin-bottom: 8px;
+  text-align: center;
+
+}
+.vertical-menu a {
+  color: #333;
+  text-decoration: none;
+}
+
+
 
 :root {
   --light: #ffffff;
@@ -312,17 +355,7 @@ ul {
 .c-nav-tool_title{
   padding-bottom: 10px;
 }
-.footer_video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  overflow: hidden;
-  border: none;
-}
+
 .footer_inner {
   background: var(--light);
   backdrop-filter: blur(50px);
@@ -333,13 +366,14 @@ ul {
 }
 
 .footer {
-  
   padding: 50px 50px 20px 50px;
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: auto; /* Устанавливаем отступ сверху на авто, чтобы прикрепить footer к низу контейнера */
-
+  margin-top: auto; 
+}
+.footer_copyright{
+  padding-left: 20px;
 }
 .container {
   max-width: 1200px;
@@ -362,12 +396,8 @@ ul {
     width: 25%;
   }
 }
-form {
-  position: relative;
-}
-svg {
-  margin: 0.5rem;
-}
+
+
 .c-2 {
   margin-top: 3.5rem;
 }

@@ -1,5 +1,6 @@
 <template>
     <div>
+      <button @click="goBack">Назад</button>
 
       <form @submit.prevent="submitHandler">
         <label for="service">Услуга:</label>
@@ -67,6 +68,9 @@
       }
     },
     methods: {
+      goBack() {
+        window.history.back();
+      },
       handleImageChange(e) {
         this.imageFile = e.target.files[0]
       },

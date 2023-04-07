@@ -96,7 +96,7 @@ body{
     padding: 50px;
     border-radius: 20px;
     box-shadow: 0 0 10px #37373720;
-        box-shadow: 0 0 10px #00000020;
+    box-shadow: 0 0 10px #00000020;
     
 }
 .card-title{

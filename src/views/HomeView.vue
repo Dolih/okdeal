@@ -3,6 +3,7 @@
     <div id="loader"></div>
   </div>
   <div v-else>
+    <div class="container">
     <div  class="content_categories">
       <div ref="myEl" class="content_categories_el"
       v-bind:class="{active_categories: item.isActive}, {active_category: item.isActiveCt}"
@@ -112,6 +113,7 @@
         
         </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -257,7 +259,11 @@ display: none;
 }
 
 body{
-  margin-top: 8vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;}
+.container{
+  margin-top: 12vh;
 }
 
 .content_categories{
@@ -268,7 +274,6 @@ width: 70vw;
 overflow-x: scroll;
 white-space: nowrap;
 border-radius: 20px;
-
 }
 .content_categories_el{
 display: inline-block;
@@ -276,10 +281,11 @@ flex-shrink: 0;
 margin-left: 10px;
 margin-right: 10px;
 background-color: #D8C3A5;
-/* border: 1px solid black; */
+cursor: pointer;
 width: 165px;
 height: 73px;
 border-radius: 20px;
+
 }
 .active_categories{
 background-color: #E98074;
@@ -291,7 +297,6 @@ background-color: #D8C3A5;
 }
 .active_category{
 background-color: #E98074;
-border: solid 1px black;
 }
 @keyframes animation_active_categories{
 0%{
@@ -304,6 +309,7 @@ border: solid 1px black;
 .content_categories_el p{
 color: #050505;
 text-align: center;
+font-size: 0.8em;
 /* font-weight:600; */
 }
 .content_categories_el_img{
@@ -312,7 +318,7 @@ margin: 5px auto 5px auto;
 width: 40px;
 }
 .content_popular{
-margin: 30px 17% 0 17%;
+margin: 30px 12% 0 12%;
 }
 .content_popular_header{
 color: #000000;
@@ -325,6 +331,7 @@ grid-template-columns: 25% 25% 25% 25%;
 grid-template-rows: auto;
 margin-top: 20px;
 height: 100%;
+
 }
 .content_popular_ad{
 display: grid;
@@ -341,6 +348,8 @@ border-radius: 20px;
 margin: 10px;
 position: relative;
 z-index: 2;
+cursor: pointer;
+
 }
 
 .active_ad{
@@ -382,7 +391,8 @@ margin: 0;
 .ad_name_text{
 margin: auto;
 padding: 0 20px 0 20px;
-font-size: 0.9em;
+font-size: 0.8em;
+font-weight: 500;
 color: rgb(0, 0, 0);
 text-align: center;
 }
@@ -487,7 +497,7 @@ padding: 15px;
 } */
 @media (max-width:1010px){
 .grid{
-  grid-template-rows: 6vh auto;
+  /* grid-template-rows: 8vh auto; */
 
 }
 .menu_search_input{
@@ -520,6 +530,7 @@ margin: 50px 10% 0 10%;
 }
 .content_popular_ads{
 grid-template-columns: 50% 50%;
+grid-template-rows: auto;
 
 }
 } 
@@ -531,7 +542,7 @@ grid-template-columns: 50% 50%;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 #loader {
     display: block;
