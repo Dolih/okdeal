@@ -1,113 +1,118 @@
 <template>
-  <div  class="content_categories">
-    <div ref="myEl" class="content_categories_el"
-    v-bind:class="{active_categories: item.isActive}, {active_category: item.isActiveCt}"
-
-    @mouseover="select_ad(item)"
-    @mouseout="unselect_ad(item)"
-    @click="viewCtgry(item)"
-    :item="item"
-    v-for="item in allCategories"
-    >
-    
-      <img class="content_categories_el_img" :src="item.img">
-      <p>{{item.nameCt}}</p>
-    </div>
+  <div v-if="isLoading" id="preloader">
+    <div id="loader"></div>
   </div>
-  <div class="content_popular">
-    <div class="content_popular_header">
-      🔥 Популярные объявления 
-    </div>
-    <div class="content_popular_ads"
-    > 
-        <div class="content_popular_ad"
-        :item="item"
-        v-if="slctCtgry"
-        v-for="item in services" :key="item.id"
-        v-bind:class="{active_ad: item.isActive}"
-        @mouseover="select_ad(item)"
-        @mouseout="unselect_ad(item)"
-        :href="href" @click="openServicePage(item)"
-        >
-          <div class="ad_name"
-          v-bind:class="{active_ad_name: item.isActive}"
-          >
-            <div class="ad_name_text"
-            v-bind:class="{active_name_text: item.isActive}"
-            > {{ item.service }}</div>
-          </div>
-          <img class="ad_img" 
-          :src="item.imageURL" 
-          v-bind:class="{ad_display: !item.isActive} "
-          
-          />
-          <div class="ad_hint"
-          v-bind:class="{ad_display: item.isActive}"
-          >
-            <div class="ad_hint_header">Услуги взамен:</div>
-            <div class="ad_hint_text"
-            > 
-              {{item.trade}} 
-            </div>
-          </div>
-          <div class="ad_info"
-          v-bind:class="{active_ad_info: item.isActive}"
-          >
-            <div class="ad_date"> {{ item.addDate }} </div>
-          </div> 
-          <div class="ad_like"
-          v-bind:class="{active_ad_like: item.isActive}"
-          >
-            <img class="ad_like_img" src="../img/like.svg">
-          </div>
+  <div v-else>
+    <div  class="content_categories">
+      <div ref="myEl" class="content_categories_el"
+      v-bind:class="{active_categories: item.isActive}, {active_category: item.isActiveCt}"
 
-        </div>
-        <div class="content_popular_ad"
-        :item="item"
-        v-else
-        v-for="item in service"
-        v-bind:class="{active_ad: item.isActive}"
-        @mouseover="select_ad(item)"
-        @mouseout="unselect_ad(item)"
-        :href="href" @click="openServicePage(item)"
-        >
-          <div class="ad_name"
-          v-bind:class="{active_ad_name: item.isActive}"
-          >
-            <div class="ad_name_text"
-            v-bind:class="{active_name_text: item.isActive}"
-            > {{ item.service }}</div>
-          </div>
-          <img class="ad_img" 
-          :src="item.imageURL" 
-          v-bind:class="{ad_display: !item.isActive} "
-          
-          />
-          <div class="ad_hint"
-          v-bind:class="{ad_display: item.isActive}"
-          >
-            <div class="ad_hint_header">Услуги взамен:</div>
-            <div class="ad_hint_text"
-            > 
-              {{item.trade}} 
-            </div>
-          </div>
-          <div class="ad_info"
-          v-bind:class="{active_ad_info: item.isActive}"
-          >
-            <div class="ad_date"> {{ item.addDate }} </div>
-          </div> 
-          <div class="ad_like"
-          v-bind:class="{active_ad_like: item.isActive}"
-          >
-            <img class="ad_like_img" src="../img/like.svg">
-          </div>
-
-        </div>
+      @mouseover="select_ad(item)"
+      @mouseout="unselect_ad(item)"
+      @click="viewCtgry(item)"
+      :item="item"
+      v-for="item in allCategories"
+      >
       
+        <img class="content_categories_el_img" :src="item.img">
+        <p>{{item.nameCt}}</p>
+      </div>
+    </div>
+    <div class="content_popular">
+      <div class="content_popular_header">
+        🔥 Популярные объявления 
+      </div>
+      
+        <div class="content_popular_ads"
+      > 
+          <div class="content_popular_ad"
+          :item="item"
+          v-if="slctCtgry"
+          v-for="item in services" :key="item.id"
+          v-bind:class="{active_ad: item.isActive}"
+          @mouseover="select_ad(item)"
+          @mouseout="unselect_ad(item)"
+          :href="href" @click="openServicePage(item)"
+          >
+            <div class="ad_name"
+            v-bind:class="{active_ad_name: item.isActive}"
+            >
+              <div class="ad_name_text"
+              v-bind:class="{active_name_text: item.isActive}"
+              > {{ item.service }}</div>
+            </div>
+            <img class="ad_img" 
+            :src="item.imageURL" 
+            v-bind:class="{ad_display: !item.isActive} "
+            
+            />
+            <div class="ad_hint"
+            v-bind:class="{ad_display: item.isActive}"
+            >
+              <div class="ad_hint_header">Услуги взамен:</div>
+              <div class="ad_hint_text"
+              > 
+                {{item.trade}} 
+              </div>
+            </div>
+            <div class="ad_info"
+            v-bind:class="{active_ad_info: item.isActive}"
+            >
+              <div class="ad_date"> {{ item.addDate }} </div>
+            </div> 
+            <div class="ad_like"
+            v-bind:class="{active_ad_like: item.isActive}"
+            >
+              <img class="ad_like_img" src="../img/like.svg">
+            </div>
+
+          </div>
+          <div class="content_popular_ad"
+          :item="item"
+          v-else
+          v-for="item in service"
+          v-bind:class="{active_ad: item.isActive}"
+          @mouseover="select_ad(item)"
+          @mouseout="unselect_ad(item)"
+          :href="href" @click="openServicePage(item)"
+          >
+            <div class="ad_name"
+            v-bind:class="{active_ad_name: item.isActive}"
+            >
+              <div class="ad_name_text"
+              v-bind:class="{active_name_text: item.isActive}"
+              > {{ item.service }}</div>
+            </div>
+            <img class="ad_img" 
+            :src="item.imageURL" 
+            v-bind:class="{ad_display: !item.isActive} "
+            
+            />
+            <div class="ad_hint"
+            v-bind:class="{ad_display: item.isActive}"
+            >
+              <div class="ad_hint_header">Услуги взамен:</div>
+              <div class="ad_hint_text"
+              > 
+                {{item.trade}} 
+              </div>
+            </div>
+            <div class="ad_info"
+            v-bind:class="{active_ad_info: item.isActive}"
+            >
+              <div class="ad_date"> {{ item.addDate }} </div>
+            </div> 
+            <div class="ad_like"
+            v-bind:class="{active_ad_like: item.isActive}"
+            >
+              <img class="ad_like_img" src="../img/like.svg">
+            </div>
+
+          </div>
+        
+        </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -124,6 +129,7 @@ return {
   services: [
     
   ],
+  isLoading: true
   
   
   
@@ -132,9 +138,18 @@ return {
 },
 
 async mounted (){
-  this.$store.dispatch('allServices')
+  Promise.all([
+  this.$store.dispatch('allServices'),
   this.$store.dispatch('allCategories')
-
+  ]).then(() => {
+        // Все асинхронные действия выполнены успешно, устанавливаем флаг isLoading в false
+        this.isLoading = false;
+      })
+      .catch((error) => {
+        // Обработка ошибок, если необходимо
+        console.error('Ошибка при загрузке данных:', error);
+        this.isLoading = false; // Устанавливаем флаг isLoading в false в случае ошибки
+      });
 },
 
 computed: {
@@ -242,7 +257,7 @@ display: none;
 }
 
 body{
-  margin-top: 20px;
+  margin-top: 8vh;
 }
 
 .content_categories{
@@ -472,7 +487,7 @@ padding: 15px;
 } */
 @media (max-width:1010px){
 .grid{
-  grid-template-rows: 6vh 94vh;
+  grid-template-rows: 6vh auto;
 
 }
 .menu_search_input{
@@ -505,7 +520,6 @@ margin: 50px 10% 0 10%;
 }
 .content_popular_ads{
 grid-template-columns: 50% 50%;
-grid-template-rows: 25% 25% 25% 25% ;
 
 }
 } 
@@ -513,5 +527,74 @@ grid-template-rows: 25% 25% 25% 25% ;
 
 
 
-
+#preloader {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#loader {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #E98074;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+#loader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #e56e60;
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+#loader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #e25b4c;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+}
+@-webkit-keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
 </style>

@@ -115,16 +115,17 @@
         return {
           showMenu: false,
           showModal: false,
+          prevScrollPos: 0, 
+          menuVisible: true
         }
       } ,
+
       async mounted(){
           if(!Object.keys(this.$store.getters.info).length){
             await this.$store.dispatch('fetchInfo')
           }
           this.$store.dispatch('idServices')
-          // if(!Object.keys(this.$store.getters.service).length){
-          //   await this.$store.dispatch('fetchServices')
-          // }
+          
       },
       computed: {
         name(){
@@ -132,7 +133,8 @@
         },
         service(){
           return this.$store.getters.info.service
-        }
+        },
+
       },
       methods: {
         navigator(){
@@ -146,6 +148,7 @@
           await this.$store.dispatch('logout')
           this.$router.push('/LoginView?message=logout')
         }, 
+  
       }
     }
 </script>
@@ -163,15 +166,22 @@
     }
   .grid{
     display: grid;
-    grid-template-rows: 8vh auto;
+    min-height: 100vh; /* Минимальная высота контейнера должна быть не меньше высоты видимой области окна браузера */
+
   }
   .menu{
     display: grid;
+    z-index: 1000;
+    
+    width: 90%;
+    height: 8vh;
     grid-template-rows: 100%;
     grid-template-columns: 25% 41% 13% 13% 8% ;
     background-color: #ffffff;
-    margin: 0 90px 0 90px;
+    margin-left: 5%;
+    margin-top: -6vh;
     border-radius: 20px;
+    transition: top 0.3s;
   }
     .menu_logotype{
       display: grid;
@@ -321,11 +331,15 @@ ul {
   padding: 2rem;
   margin: 1rem 0;
 }
+
 .footer {
+  
   padding: 50px 50px 20px 50px;
   position: relative;
   display: flex;
   align-items: center;
+  margin-top: auto; /* Устанавливаем отступ сверху на авто, чтобы прикрепить footer к низу контейнера */
+
 }
 .container {
   max-width: 1200px;
