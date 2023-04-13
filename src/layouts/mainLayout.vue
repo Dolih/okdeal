@@ -36,79 +36,77 @@
         <div class='content'>
             <RouterView/>
         </div>
-        <footer class="footer">
-  
+      <footer class="footer">
+        <div class="container_main">
+          <div class="footer_inner">
+            <div class="c-footer">
+              <div class="layout">
+                <div class="layout_item w-50">
+                  <div class="newsletter">
+                    <h3 class="newsletter_title">Ищите услуги быстро и легко с помощью нашего сервиса.</h3>
+                    
+                  </div>
+                </div>
 
-  <div class="container">
-    <div class="footer_inner">
-      <div class="c-footer">
-        <div class="layout">
-          <div class="layout_item w-50">
-            <div class="newsletter">
-              <h3 class="newsletter_title">Ищите услуги быстро и легко с помощью нашего сервиса.</h3>
+                <div class="layout_item w-25">
+                  <nav class="c-nav-tool">
+                    <h4 class="c-nav-tool_title">Меню</h4>
+                    <ul class="c-nav-tool_list">
+                      <li>
+                        <a href="../views/HomeView" class="c-link">Главная</a>
+                      </li>
+
+                      <li>
+                        <a href="/pages/about-us" class="c-link">Все услуги</a>
+                      </li>
+
+                      <li>
+                        <a href="/blogs/community" class="c-link">Личный кабиент</a>
+                      </li>
+                      <li>
+                        <a href="#" class="c-link">О нас</a>
+                      </li>
+                    </ul>
+                  </nav>
+
+                </div>
+
+                <div class="layout_item w-25">
+                  <nav class="c-nav-tool">
+                    <h4 class="c-nav-tool_title">Помощь</h4>
+                    <ul class="c-nav-tool_list">
+
+
+                      <li class="c-nav-tool_item">
+                        <a href="/pages/help" class="c-link">FAQ</a>
+                      </li>
+
+                      <li class="c-nav-tool_item">
+                        <a href="/pages/privacy-policy" class="c-link">Политика конфидициальности</a>
+                      </li>
+
+                      <li class="c-nav-tool_item">
+                        <a href="/pages/contact" class="c-link">Контакты</a>
+                      </li>
+
+                      <li class="c-nav-tool_item">
+                        <a href="/LoginView" class="c-link">
+                          Войти
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+
+                </div>
+              </div>
               
             </div>
           </div>
-
-          <div class="layout_item w-25">
-            <nav class="c-nav-tool">
-              <h4 class="c-nav-tool_title">Меню</h4>
-              <ul class="c-nav-tool_list">
-                <li>
-                  <a href="../views/HomeView" class="c-link">Главная</a>
-                </li>
-
-                <li>
-                  <a href="/pages/about-us" class="c-link">Все услуги</a>
-                </li>
-
-                <li>
-                  <a href="/blogs/community" class="c-link">Личный кабиент</a>
-                </li>
-                <li>
-                  <a href="#" class="c-link">О нас</a>
-                </li>
-              </ul>
-            </nav>
-
-          </div>
-
-          <div class="layout_item w-25">
-            <nav class="c-nav-tool">
-              <h4 class="c-nav-tool_title">Помощь</h4>
-              <ul class="c-nav-tool_list">
-
-
-                <li class="c-nav-tool_item">
-                  <a href="/pages/help" class="c-link">FAQ</a>
-                </li>
-
-                <li class="c-nav-tool_item">
-                  <a href="/pages/privacy-policy" class="c-link">Политика конфидициальности</a>
-                </li>
-
-                <li class="c-nav-tool_item">
-                  <a href="/pages/contact" class="c-link">Контакты</a>
-                </li>
-
-                <li class="c-nav-tool_item">
-                  <a href="/LoginView" class="c-link">
-                    Войти
-                  </a>
-                </li>
-              </ul>
-            </nav>
-
+          <div class="footer_copyright">
+            <p>&copy; 2023 Наше название сайта.</p>
           </div>
         </div>
-        
-      </div>
-    </div>
-    <div class="footer_copyright">
-      <p>&copy; 2023 Наше название сайта.</p>
-    </div>
-  </div>
-</footer>
+      </footer>
     </div>
     
 </template>
@@ -166,7 +164,7 @@
     }
     body{
       margin-top: 20px;
-      background-color: #EAE7DC;
+      background-color: #f3f3f3;
       font-family: 'Open Sans', sans-serif;
     }
   .grid{
@@ -174,6 +172,7 @@
     min-height: 100vh; 
 
   }
+  
   .menu{
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -186,23 +185,27 @@
     width: 90%;
     height: 8vh;
     grid-template-rows: 100%;
-    grid-template-columns: 25% 41% 13% 13% 8% ;
-    background-color: #ffffff;
+    grid-template: 
+    [start] 'logotype search allServices addService profile' 100% [row-end] /25% 41% 13% 13% 8%
+    ;
+    background-color: #2a2a2a;
     margin-left: 5%;
     border-radius: 0 0 20px 20px;
-    box-shadow: 0 0 5px #37373720;
-    box-shadow: 0 0 5px #37373720;
+    box-shadow: 0 0 5px #151515;
+    box-shadow: 0 0 5px #151515;
   }
 
     .menu_logotype{
       display: grid;
+      grid-area: logotype;
+
       grid-template-columns: 100%;
       grid-template-rows: 100%;
       text-align: center;
       align-items: center;
     }
     .menu_logotype_text{
-      color: #000000;
+      color: #f3f3f3;
       font-size: 1.6em;
       font-weight: bold;
       text-align: center;
@@ -213,32 +216,35 @@
     }
     .menu_search{
       display: grid;
+      grid-area: search;
+
       grid-template-columns: 100%;
       grid-template-rows: 100%;
       align-items: center;
     }
     .menu_search_input{
-      background-color: #ffffff59;
+      background-color: #f3f3f3;
       width: 60%;
       height: 50%;
       margin-left: auto;
       margin-right: auto;
       text-align: center;
       border-radius: 20px;
-      border: 1px solid #D8C3A5;
+      border: 1px solid #f3f3f3;
       font-size: 1em;
-      color: #000000;
+      color: #1c1c1c;
       
     }
     .menu_services{
       display: grid;
+      grid-area: allServices;
       grid-template-columns: 100%;
       grid-template-rows: 100%;
       font-size: 1em;
       /* font-weight: bold; */
       text-align: center;
       align-items: center;
-      color: #000000;
+      color: #f3f3f3;
     }
     .menu_services p {
       /* margin: 0 5px 0 5px;
@@ -248,16 +254,15 @@
     }
     .menu_addServices{
       display: grid;
+      grid-area: addService;
       grid-template-columns: 100%;
       grid-template-rows: 100%;
       align-items: center;
       font-size: 1em;
       /* font-weight: bold; */
-      text-decoration-line: underline;
-      text-decoration-color: #F6F3F3;
       /* text-decoration-thickness: 2px; */
       text-align: center;
-      color: #000000;
+      color: #f3f3f3;
       animation-name: menu_addServices_animation;
       animation-duration: 1s;
       animation-iteration-count: infinite;
@@ -267,8 +272,7 @@
 
     .menu_addServices_text{
       margin: 0 5px 0 5px;
-      border: 1px solid black;
-      background-color: #ffffff59;
+      border: 1px solid #f3f3f3;
       padding: 8px;
       border-radius: 10px;
       cursor: pointer;
@@ -277,6 +281,8 @@
     
     .menu_profile{
       display: grid;
+      grid-area: profile;
+
       grid-template-columns: 100%;
       grid-template-rows: 100%;
       align-items: center;
@@ -287,7 +293,7 @@
       width: 45px; 
       height: 45px;
       margin-left: 20%;
-      background: #000000;
+      background: #f3f3f3;
       border-radius: 50%;
     }
 
@@ -297,12 +303,12 @@
   top: 100%;
   left: -25px;
   min-width: 60px;
-  background-color: #fff;
+  background-color: #2a2a2a;
   border-radius: 20px;
   padding: 20px;
   z-index: 1;
-  box-shadow: 0 0 5px #37373720;
-  box-shadow: 0 0 5px #37373720;
+  box-shadow: 0 0 5px #151515;
+  box-shadow: 0 0 5px #151515;
 }
 .vertical-menu ul {
   list-style: none;
@@ -315,15 +321,15 @@
 
 }
 .vertical-menu a {
-  color: #333;
+  color: #f3f3f3;
   text-decoration: none;
 }
 
 
 
 :root {
-  --light: #ffffff;
-  --dark: #000;
+  --light: #2a2a2a;
+  --dark: #f3f3f3;
 }
 
 h3 {
@@ -336,6 +342,7 @@ a {
   text-decoration: none;
   color: var(--dark);
   font-weight: 500;
+  
   transition: 0.3s ease-in;
   border-bottom: 1px solid transparent;
   margin-bottom: 0.5rem;
@@ -381,7 +388,13 @@ ul {
   margin: 0 auto;
   padding: 0 1rem;
 }
+.newsletter_title{
+  color: #f4f4f4;
+}
+.c-nav-tool_title{
+  color: #f4f4f4;
 
+}
 
 @media (min-width: 675px) {
   .layout {
@@ -402,7 +415,43 @@ ul {
   margin-top: 3.5rem;
 }
 .footer_copyright {
-  color: black;
+  color: #2a2a2a;
+  padding-bottom: 20px;
 }
+@media (max-width:420px){
+  .grid{
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .menu{
+    width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    grid-template: 
+    [start] 'logotype search profile' 100% [row-end] /70% 15% 15%
+    ;
+  }
 
+  .menu_logotype_text{
+    padding-left: 25px;
+    text-align: left;
+    font-size: 0.8em;
+  }
+  .footer{
+    width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+  .footer_inner{
+    margin-left: 0%;
+    margin-right: 0;
+    border-radius: 0;
+  }
+  .container_main{
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
 </style>

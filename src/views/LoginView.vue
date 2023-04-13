@@ -86,17 +86,19 @@
 body{
     margin: 0;
     padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f3f3f3;
 }
 
 .card{
     margin: 100px auto 0 auto;
     height: 350px;
     width: 400px;
-    background-color: white;
+    background-color: #2a2a2a;
     padding: 50px;
     border-radius: 20px;
-    box-shadow: 0 0 10px #37373720;
-    box-shadow: 0 0 10px #00000020;
+    box-shadow: 0 0 5px #151515;
+    box-shadow: 0 0 5px #151515;
     
 }
 .card-title{
@@ -104,16 +106,17 @@ body{
     text-align: center;
     font-size: 1.6em;
     padding-bottom: 40px;
+    color: #f3f3f3;
 }
 .input-field{
     padding-bottom: 40px;
 
 }
 .validate{
-    background-color: rgb(255, 255, 255);
+    background-color: #f3f3f3;
     height: 50px;
     width: 100%;
-    border: 2px solid #EAE7DC;
+    border: 2px solid #f3f3f3;
     border-radius: 20px;
     text-align: center;
     font-size: 16px;
@@ -125,7 +128,7 @@ body{
     color: white;
     border: none;
     border-radius: 20px;
-    background-color: #E98074;
+    background-color: #3b80b8;
     height: 50px;
     width: 100%;
 }
@@ -139,7 +142,7 @@ body{
 }
 .hide_sign-up{
     font-size: 16px;
-    color: #E98074;
+    color: #3b80b8;
 }
 .hide_sign-up:hover{
     color: rgb(229, 107, 94)

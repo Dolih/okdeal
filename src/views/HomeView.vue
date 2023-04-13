@@ -15,13 +15,16 @@
       v-for="item in allCategories"
       >
       
-        <img class="content_categories_el_img" :src="item.img">
+        <img class="content_categories_el_img" 
+        :src=" loaded ? item.img : placeholderURL"
+        @load="onImageLoad"
+        >
         <p>{{item.nameCt}}</p>
       </div>
     </div>
     <div class="content_popular">
       <div class="content_popular_header">
-        🔥 Популярные объявления 
+        🔥 Популярные объявления
       </div>
       
         <div class="content_popular_ads"
@@ -38,14 +41,16 @@
             <div class="ad_name"
             v-bind:class="{active_ad_name: item.isActive}"
             >
+            
               <div class="ad_name_text"
               v-bind:class="{active_name_text: item.isActive}"
               > {{ item.service }}</div>
+
             </div>
             <img class="ad_img" 
-            :src="item.imageURL" 
+            :src="loaded ? item.imageURL : placeholderURL" 
             v-bind:class="{ad_display: !item.isActive} "
-            
+            @load="onImageLoad"
             />
             <div class="ad_hint"
             v-bind:class="{ad_display: item.isActive}"
@@ -82,12 +87,12 @@
             >
               <div class="ad_name_text"
               v-bind:class="{active_name_text: item.isActive}"
-              > {{ item.service }}</div>
+              >{{ item.service }}</div>
             </div>
             <img class="ad_img" 
-            :src="item.imageURL" 
+            :src="loaded ? item.imageURL : placeholderURL"
             v-bind:class="{ad_display: !item.isActive} "
-            
+            @load="onImageLoad"
             />
             <div class="ad_hint"
             v-bind:class="{ad_display: item.isActive}"
@@ -97,6 +102,10 @@
               > 
                 {{item.trade}} 
               </div>
+            </div>
+            <div class="ad_city"
+            >
+              г. {{ item.city }}
             </div>
             <div class="ad_info"
             v-bind:class="{active_ad_info: item.isActive}"
@@ -128,6 +137,9 @@ return {
   isActive: false,
   isActiveCt: false,
   slctCtgry: false,
+  loaded: true,
+  placeholderURL: '../img/ads.jpeg',
+
   services: [
     
   ],
@@ -144,13 +156,11 @@ async mounted (){
   this.$store.dispatch('allServices'),
   this.$store.dispatch('allCategories')
   ]).then(() => {
-        // Все асинхронные действия выполнены успешно, устанавливаем флаг isLoading в false
         this.isLoading = false;
       })
       .catch((error) => {
-        // Обработка ошибок, если необходимо
         console.error('Ошибка при загрузке данных:', error);
-        this.isLoading = false; // Устанавливаем флаг isLoading в false в случае ошибки
+        this.isLoading = false; 
       });
 },
 
@@ -187,6 +197,9 @@ computed: {
   idService(){
     return this.$store.getters.serviceId
   },
+  name(){
+          return this.$store.getters.info.name
+        },
   
 },
 
@@ -197,6 +210,9 @@ select_ad(item) {
 unselect_ad(item) {
   item.isActive = false
 },
+onImageLoad() {
+      this.loaded = true;
+    },
 viewCtgry(item){
   this.slctCtgry = true
   const el = this.$refs.myEl
@@ -261,9 +277,11 @@ display: none;
 body{
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;}
+  font-family: 'Open Sans', sans-serif;
+}
 .container{
-  margin-top: 12vh;
+  margin: 12vh auto 0 auto;
+  padding: 0;
 }
 
 .content_categories{
@@ -274,40 +292,42 @@ width: 70vw;
 overflow-x: scroll;
 white-space: nowrap;
 border-radius: 20px;
+
+
 }
 .content_categories_el{
 display: inline-block;
 flex-shrink: 0;
 margin-left: 10px;
 margin-right: 10px;
-background-color: #D8C3A5;
+background-color: #3b80b8;
 cursor: pointer;
-width: 165px;
+width: 180px;
 height: 73px;
 border-radius: 20px;
 
 }
 .active_categories{
-background-color: #E98074;
+background-color: #2a2a2a;
 animation-name: animation_active_categories;
 animation-duration: 400ms;
 }
 .no_active_category{
-background-color: #D8C3A5;
+background-color: #3b80b8;
 }
 .active_category{
-background-color: #E98074;
+background-color: #2a2a2a;
 }
 @keyframes animation_active_categories{
 0%{
-  background-color: #D8C3A5;
+  background-color: #3b80b8;
 }
 100%{
-  background-color: #E98074;
+  background-color: #2a2a2a;
 }
 }
 .content_categories_el p{
-color: #050505;
+color: #f3f3f3;
 text-align: center;
 font-size: 0.8em;
 /* font-weight:600; */
@@ -321,7 +341,7 @@ width: 40px;
 margin: 30px 12% 0 12%;
 }
 .content_popular_header{
-color: #000000;
+color: #030303;
   font-size: 1.5em;
   /* font-weight: bold; */
 }
@@ -336,13 +356,14 @@ height: 100%;
 .content_popular_ad{
 display: grid;
 grid-template: 
-[start] 'name name' 25% [row2   ]
-[row2 ] 'img  img ' 58% [row3   ]
-[row3 ] 'date like' 17% [row-end] /60% 40% 
+[start] 'img  img  ' 65% [row2   ]
+[row2 ] 'name name ' 15% [row3   ]
+[row3 ] 'city like ' 10% [row4   ]
+[row4 ] 'date like ' 10% [row-end] /60% 40% 
 ;
-background-color: #ffffff59;
+background-color: #2a2a2a;
 border-radius: 20px;
-border: 1px solid #8d8b8b5f;
+/* border: 1px solid #2a2a2ab9; */
 height: 30vh;
 border-radius: 20px;
 margin: 10px;
@@ -350,11 +371,23 @@ position: relative;
 z-index: 2;
 cursor: pointer;
 
+/* box-shadow: 0 0 5px #151515;
+  box-shadow: 0 0 5px #151515; */
+
 }
+@keyframes active_ad_bg{
+  0%{
+    background-color: #2a2a2a;
 
+  }
+  100%{
+    background-color: #3b80b8;
+  }
+}
 .active_ad{
-
-background-color: #ffffffa6;
+background-color: #3b80b8;
+animation-name: active_ad_bg;
+animation-duration: 400ms;
 }
 
 .ad_name{
@@ -362,64 +395,54 @@ position: relative;
 z-index: 1;
 grid-area: name;
 display: flex;
-width: 90%;
+/* width: 90%; */
 
-margin: 5% 5% 0 5%;
+margin: -15% 0 10% 0;
 border-radius: 20px;
 /* background-color: #CA4433; */
-background-color: #D8C3A5;
+background-color: #f3f3f3;
+border: 4px solid #2a2a2a;
+/* box-shadow: 0 0 5px #090A0A;
+box-shadow: 0 0 5px #090A0A; */
+
 }
-.active_ad_name{
-animation-name: active_name;
-animation-duration: 400ms;
-background-color: #E98074;
-width: 100%;
-margin: 0;
-}
-@keyframes active_name{
-0% {
-  background-color: #D8C3A5;
-  width: 90%;
-  margin: 5% 5% 0 5%;
-}
-100%{
-  background-color: #E98074;
-  width: 100%;
-  margin: 0;
-}
-}
+
 .ad_name_text{
-margin: auto;
+margin: auto; 
 padding: 0 20px 0 20px;
-font-size: 0.8em;
+font-size: 0.9em;
 font-weight: 500;
-color: rgb(0, 0, 0);
+color: #2a2a2a; 
 text-align: center;
 }
-.active_name_text{
+/* .active_name_text{
 padding: 0 30px 0 30px;
 
+} */
+.ad_name_img{
+  display: block;
+  width: 10%;
 }
 
 .ad_img{
 grid-area: img;
-width: 90%;
+width: 100%;
 height: 95%;
-margin: 5% 5% 0 5%;
-border-radius: 20px;
+/* margin: 5% 5% 0 5%; */
+border-radius: 20px 20px 3px 3px;
 object-fit: cover;
 }
 .ad_hint{
 display: none;
 grid-area: img;
-margin: 5% 5% -1.5% 5%;
-border-radius: 20px;
+margin: 0 0 4% 0;
+border-radius: 20px 20px 3px 3px;
 padding: 10px;
 background-color: #000000a9;
 }
 
 .ad_hint_header{
-color: #F6F3F3;
+color: #f3f3f3;
 text-align: center;
 font-weight: bold;
 font-size: 0.9em;
@@ -445,45 +468,59 @@ animation-duration: 400ms;
   opacity: 1;
 }
 }
+.ad_city{
+  grid-area: city;
+  /* margin: 0 0 -20% 0; */
+/* padding-left: 17%; */
+  margin-top: -7%;
+  padding-left: 20px;
+
+  color: #f3f3f3;
+  font-size: 0.8em;
+
+}
 .ad_info{
 grid-area: date;
 display: flex;
-margin: 10% 5% 7% 10%;
+margin-top: -7%;
+padding-left: 20px;
+
+/* margin: 10% 5% 7% 10%; */
 border-radius: 20px;
-background-color: #D8C3A5;
+/* background-color: #437FB1; */
 }
 /* .active_ad_info{
 margin: 10% 20% 7% 10%;
 } */
 .ad_date{
 
-margin: auto;
-color: rgb(0, 0, 0);
-font-size: 0.7em;
+/* margin: -15% auto auto auto; */
+color: #f3f3f3;
+font-size: 0.8em;
 
 }
 .ad_like{
+  
 grid-area: like;
-background-color: #D8C3A5;
-margin: 15% 15% 10% 20%;
+/* background-color: #437FB1; */
 border-radius: 20px;
 }
-.active_ad_like{
+/* .active_ad_like{
 margin: 15% 15% 10% 0;
-background-color: #E98074;
+background-color: #294F74;
 animation-name: animation_ad_like;
 animation-duration: 400ms;
-}
-@keyframes animation_ad_like{
+} */
+/* @keyframes animation_ad_like{
 0%{
   margin: 15% 15% 10% 20%;
-  background-color: #D8C3A5;
+  background-color: #437FB1;
 }
 100%{
   margin: 15% 15% 10% 0;
-  background-color: #E98074;
+  background-color: #294F74;
 }
-}
+} */
 .ad_like_img{
 display: block;
 margin: auto;
@@ -495,10 +532,22 @@ font-weight: bold;
 font-size: 0.9em;
 padding: 15px;
 } */
+
+@media (min-width:1900px){
+  .content_categories{
+    margin-left:auto;
+    margin-right: auto;
+    width: 60vw;
+  }
+  .content_popular{
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
 @media (max-width:1010px){
 .grid{
   /* grid-template-rows: 8vh auto; */
-
+  
 }
 .menu_search_input{
   height: 55%;
@@ -523,17 +572,64 @@ padding: 15px;
 }
 .content_categories_el p{
   font-size: 0.9em;
-  margin-top: 18%
 }
 .content_popular{
 margin: 50px 10% 0 10%;
 }
+.content_popular_header{
+  margin-left: 10%;
+  margin-right: 10%;
+}
 .content_popular_ads{
 grid-template-columns: 50% 50%;
 grid-template-rows: auto;
-
+margin-left: 10%;
+margin-right: 10%;
+}
+.content_popular_ad{
+  min-height: 300px;
+}
+.content_categories_el_img{
+  height: 50%;
 }
 } 
+@media (max-width:420px){
+.content_categories{
+  width: 100vw;
+  border-radius: 0;
+  
+}
+.content_categories_el{
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.content_categories_el p{
+  font-size: 0.7em;
+}
+.content_popular_ads{
+grid-template-columns: 50% 50%;
+grid-template-rows: auto;
+margin-left: 00%;
+margin-right: 00%;
+}
+.content_popular_header{
+  margin-left: 10px;
+  font-size: 1.2em;
+}
+.content_popular{
+margin: 25px 0% 0 0%;
+}
+.content_popular_ad{
+  min-height: 200px;
+  margin: 2%;
+}
+.ad_name_text{
+  font-size: 0.7em;
+}
+.ad_date, .ad_city{
+  font-size: 0.6em;
+}
+}
 
 
 
@@ -554,7 +650,7 @@ grid-template-rows: auto;
     margin: -75px 0 0 -75px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #E98074;
+    border-top-color: #2a2a2a;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
@@ -567,7 +663,7 @@ grid-template-rows: auto;
     bottom: 5px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #e56e60;
+    border-top-color: #2a2a2a;
     -webkit-animation: spin 3s linear infinite;
     animation: spin 3s linear infinite;
 }
@@ -580,7 +676,7 @@ grid-template-rows: auto;
     bottom: 15px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #e25b4c;
+    border-top-color: #2a2a2a;
     -webkit-animation: spin 1.5s linear infinite;
     animation: spin 1.5s linear infinite;
 }

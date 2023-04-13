@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/AddView',
     name: 'AddView',
-    meta: {layout: 'empty'},
+    meta: {layout: 'main'},
     component: () => import('../views/AddView.vue')
   },
   {
