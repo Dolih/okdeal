@@ -30,10 +30,6 @@ export default{
             const user = firebase.auth().currentUser
             return user ? user.uid : null
         },
-        // getSid(){
-        //     const user = firebase.auth().currentUser
-        //     const service = user.child('services').push()
-        // },
 
         async logout(dispatch){
             await firebase.auth().signOut()

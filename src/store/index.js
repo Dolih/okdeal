@@ -4,11 +4,13 @@ import info from './info.js'
 import addService from './addService.js'
 import service from './service.js'
 import categories from './categories.js'
+
 export default createStore({
   state: {
-    error: null
+    error: null,
   },
   mutations: {
+
     setError(state, error){
       state.error = error
     },
@@ -19,7 +21,8 @@ export default createStore({
   actions: {
   },
   getters: {
-    error: s => s.error
+    error: s => s.error,
+
   },
   modules: {
     auth, info, addService, service, categories

@@ -7,24 +7,59 @@
       <div class="container_service">
       <div class="grid_service">
         <div class="back"><button class="btn_back" @click="goBack">← Назад</button></div>
-        <div class="name"><p>{{$route.query.service}}</p></div>
+        <div class="name"><p>{{$route.query.title}}</p></div>
         <div class="category"><p>Категория: {{$route.query.selectedCategory}}</p></div>
         <div class="name_about"><p>Об услуге:</p></div>
         <div class="about"><p>{{$route.query.description}}</p></div>
         <div class="info">
-          <p class="service_info_date">{{$route.query.addDate}}</p>
+          <p class="service_info_date">{{$route.query.createdAt}}</p>
           <p class="service_info_city">г. {{$route.query.city}}</p>
-          <div class="add_like"></div>
+          <div class="add_like"><img class="add_like_img" src="../img/like1.svg"></div>
         </div>  
         <div class="img">
           <img 
           class="image_service" 
-          :src="loaded ? $route.query.imageURL : placeholderURL"
+          :src="loaded ? $route.query.image : placeholderURL"
           @load="onImageLoad"
           >
         </div>
-        <div class="nameUser"><p class="nameUser_title">Исполнитель:</p> <p class="nameUser_name">Иван Иванов</p></div>
-        <div class="links"><div class="links_phone">+7 {{$route.query.phone}}</div></div>
+        <div class="nameUser"><p class="nameUser_title">Связаться с:</p> <p class="nameUser_name">{{$route.query.name}}</p></div>
+        <div class="links">
+          <div class="links_phone" @click="generateQRCode">+{{$route.query.phone}}
+            <transition name="fade">
+            <div class="qr-code" v-if="showQRCode" @click.stop="hideQRCode">
+              <div class="qr-code_container">
+              <p class="qr-code_title">Мобильный телефон исполнителя<br><p class="qr-code_title_name">{{$route.query.name}}</p></p>
+              <img class="qr-code_img" :src="qrCodeImage" alt="QR Code" @click.stop>
+            </div>
+            </div>
+          </transition>
+          </div>
+          <div class="links_vk" >
+            <a class="links_a" :href="'https://www.' + getLinks.vk" target="_blank">
+              <div class="links_img_container">
+                <img class="links_img" src="../img/vk.svg" alt="" v-if="getLinks.vk">
+                <div class="links_empty" v-else></div>
+              </div>
+            </a>
+          </div>
+          <div class="links_tg" >
+            <a class="links_a" :href="'https://www.' + getLinks.tg" target="_blank">
+              <div class="links_img_container">
+                <img class="links_img" src="../img/tg.svg" alt="" v-if="getLinks.tg">
+                <div class="links_empty" v-else></div>
+              </div>
+            </a>
+          </div>
+          <div class="links_wt" >
+            <a class="links_a" :href="'https://www.' + getLinks.wt" target="_blank">
+              <div class="links_img_container">
+                <img class="links_img" src="../img/wt.svg" alt="" v-if="getLinks.wt">
+                <div class="links_empty" v-else></div>
+              </div>
+            </a>
+          </div>
+        </div>
         <div class="trade"><p class="trade_title">Услуги взамен:</p> <p class="trade_name"> {{$route.query.trade}}</p></div>
       </div>
       </div>
@@ -32,11 +67,22 @@
   
 </template>
 <script>
+import QRCode from 'qrcode';
+
 export default{
   computed:{
     serviceInfo(){
       
     },
+    getLinks(){
+      console.log(this.$route.query.tg)
+      return {
+      vk: this.$route.query.vk,
+      tg: this.$route.query.telegram,
+      wt: this.$route.query.wt
+    };
+
+    }
     
   },
   data(){
@@ -44,6 +90,8 @@ export default{
         isLoading: true,
         loaded: true,
         placeholderURL: '../img/ads.jpeg',
+        showQRCode: false,
+        qrCodeImage: ''
 
 
       }
@@ -53,24 +101,53 @@ export default{
     setTimeout(() => {
       this.isLoading = false; // Устанавливаем флаг isLoading в false после задержки, чтобы имитировать получение данных
     }, 1000);
+    const relativeImagePath = '../img/vk.svg';
+const absoluteImagePath = new URL(relativeImagePath, document.baseURI).href;
+console.log(absoluteImagePath);
   },
   methods:{
+    hideQRCode() {
+    this.showQRCode = false;
+  },
     goBack() {
         window.history.back();
       },
       onImageLoad() {
       this.loaded = true;
     },
+    generateQRCode() {
+      const canvas = document.createElement('canvas');
+      QRCode.toCanvas(canvas, this.$route.query.phone, (error) => {
+        if (error) {
+          console.error('Failed to generate QR Code', error);
+        } else {
+          this.qrCodeImage = canvas.toDataURL();
+          this.showQRCode = true;
+        }
+      });
+    }
   }
   
 }
 </script>
 <style>
- 
+ .fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
  body{
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
+}
+.links_empty {
+  background-color: #000000;
+  z-index: 999; /* Пример цвета с полупрозрачностью */
 }
 .container_service{
   margin: 9vh 15vw 0 15vw;
@@ -92,6 +169,42 @@ export default{
 }
 .back{
   grid-area: back;
+}
+.qr-code{
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #2a2a2a95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+.qr-code_container{
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 20px;
+}
+.qr-code_title{
+  color: #f3f3f3;
+  font-size: 1.4em;
+  padding: 20px;
+  background-color: #3b80b8;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.qr-code_title_name{
+  color: #2a2a2a;
+  font-weight: bold;
+}
+.qr-code_img{
+  display: inline-block;
+
+  height: 30vh;
+  border-radius: 20px;
 }
 .btn_back{
   font-size: 1.2em;
@@ -127,6 +240,14 @@ export default{
   font-weight: bold;
 
 }
+/* .add_like{
+  height: 100%;
+  width: 100%;
+}
+.add_like_img{
+  height: 20%;
+  width: 20%;
+} */
 .name_about{
   grid-area: name_about;
   margin-left: 20px;
@@ -142,8 +263,10 @@ export default{
 }
 .info{
   grid-area: info;
+  grid-template-columns: 30% 60% 10%;
   margin-bottom: 21px;
   margin-right: 20px;
+  flex-direction: column;
 
 }
 .service_info_date, .service_info_city{
@@ -156,14 +279,27 @@ export default{
   border-radius: 20px;
 }
 .service_info_date{
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 45px;
+  padding-right: 45px;
 
 }
 .service_info_city{
   padding-left: 85px;
   padding-right: 85px;
   
+}
+.add_like{
+  display: inline-block;
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
+  vertical-align: middle; /* Добавляем вертикальное выравнивание */
+
+}
+.add_like_img{
+  height: 50px;
+  /* width: 40px; */
+  vertical-align: middle; /* Добавляем вертикальное выравнивание */
+
 }
 .img{
   grid-area: img;
@@ -184,6 +320,8 @@ export default{
   grid-area: nameUser;
   margin-right: 20px;
   margin-top: -22%;
+  margin-bottom: 10%;
+  
   
 
 }
@@ -193,23 +331,55 @@ export default{
   margin-bottom: 5px;
 }
 .nameUser_name{
-  font-size: 1.2em;
+  font-size: 1.4em;
   margin-bottom: 15px;
 
 }
 .links{
   grid-area: links;
+  display: grid;
+  grid-gap: 1%;
   margin-top: -10%;
-  
+  grid-template-columns: 47% 12% 12% 12%;
+  margin-bottom: 5%;
 
+}
+.links_img{
+  width: 100%;
+  height: 100%;
+}
+.links_img_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.links_img:hover{
+  width: 90%;
 }
 .links_phone{
   border-radius: 20px;
   padding: 5px 10px;
   border: 2px solid #2a2a2a;
   text-align: center;
-  width: 200px;
+  /* width: 150px; */
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.links_a{
+ 
+}
+.links_vk, .links_tg, .links_wt{
+  border-radius: 20px;
+  padding: 5px 10px;
+  /* border: 2px solid #2a2a2a; */
+  text-align: center;
+  /* width: 200px; */
   font-size: 1.2em;
+
 }
 .trade{
   grid-area: trade;

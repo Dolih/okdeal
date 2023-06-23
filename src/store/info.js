@@ -1,5 +1,6 @@
-import firebase from 'firebase/app'
 /* eslint-disable */
+import axios from 'axios';
+import Cookies from 'js-cookie'
 export default{
     state: {
         info: {}
@@ -14,16 +15,18 @@ export default{
     },
 
     actions : {
-        async fetchInfo({dispatch, commit}) {
-            try{
-                const uid = await dispatch('getUid')
-                const info = (await firebase.database().ref(`/users/${uid}/info`).once('value')).val()
-                commit('setInfo', info)
-            }catch(error){
-                
+        async fetchInfo({commit}) {
+            const token = Cookies.get('token')
+            try {
+              const response = await axios.get('http://localhost:5050/users', {headers: {
+                  Authorization: `Bearer ${token}`
+              }});
+              const info = response.data;
+              commit('setInfo', info)
+            } catch(error) {
+              console.log(error)
             }
-           
-        }
+          }
     },
     getters: {
         info : $ => $.info

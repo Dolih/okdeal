@@ -16,5 +16,12 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script>
+      // Это позволит серверу возвращать index.html для всех несуществующих маршрутов
+      // и позволит Vue Router обработать маршрутизацию на стороне клиента.
+      if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+      }
+    </script>
   </body>
 </html>

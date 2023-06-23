@@ -53,27 +53,59 @@
 </template>
 
 <script>
-// import {email, required, minLength} from '@vuelidate/validators'
+import axios from 'axios';
+import Cookies from 'js-cookie'
+import {getUserInfo} from '../store/userInfo.js'
+import { mapMutations } from 'vuex'
+
+
     export default{
         name: 'LoginView',
+        
         data: ()=> ({
             email: '',
-            password: ''
+            password: '',
+            token: '',
+            userInfo: '',
+            username: ''
+
         }),
+
         methods: {
+            ...mapMutations(['loginTrue']),
+
             async submitHandler() {
                 
                 const formData = {
                     email: this.email,
                     password: this.password
                 }
-                console.log(formData)
-                    try{
-                        await this.$store.dispatch('login', formData)
-                        this.$router.push('/HomeView')
-                    } catch (error){
-                       
-                    }
+
+                    const config = {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        };
+
+                       await axios.post('http://localhost:5050/auth/login', formData, config)
+                        .then(response => {
+                            this.token = response.data.token
+                            Cookies.set('token', this.token, { expires: 7 })
+                            console.log(response.data)
+                            this.$router.push('/')
+  
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                        getUserInfo().then(data => {
+                        this.username = data
+                        }).catch(error => {
+                        console.error(error);
+                        });
+                        
+                        
+                        
             },
             
         },

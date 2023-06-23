@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/HomeView',
+    path: '/',
     name: 'HomeView',
     meta: {layout: 'main'},
     component: () => import('../views/HomeView.vue')
@@ -38,11 +38,19 @@ const routes = [
     component: () => import('../views/ServiceView.vue')
   },
   {
-    path: '/ChatView',
-    name: 'ChatView',
+    path: '/AdminServicesView',
+    name: 'AdminServicesView',
     meta: {layout: 'main'},
-    component: () => import('../views/ChatView.vue')
-  }
+    component: () => import('../views/AdminServicesView.vue')
+  },
+  {
+    path: '/UserView',
+    name: 'UserView',
+    meta: {layout: 'main'},
+    component: () => import('../views/UserView.vue')
+  },
+  
+  
   
 ]
 

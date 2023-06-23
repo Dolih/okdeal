@@ -1,4 +1,5 @@
 import firebase from 'firebase/app'
+import axios from 'axios';
 
 export default {
     state: {
@@ -17,15 +18,8 @@ export default {
     actions: {
         
         async allCategories({ commit}) {
-            const servicesRef = firebase.database().ref(`/categories`);
-            const snapshot = await servicesRef.once('value'); 
-            const categories = snapshot.val();
-            const categoriesIds = Object.keys(categories);
-            let categoriesInfo = []                
-            for(let i = 0; i<categoriesIds.length; i++){
-                let categoriesInf = (await firebase.database().ref(`/categories/${categoriesIds[i]}`).once('value')).val()
-                categoriesInfo.push(categoriesInf);
-            }
+            const response = await axios.get('http://localhost:5050/categories');
+            const categoriesInfo = response.data;
             commit('setCategories', categoriesInfo)  
         }
     },

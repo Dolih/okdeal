@@ -1,12 +1,25 @@
 <template>
-    <div class="grid" >
+    <div class="grid" @click="hideSearchResults">
         <div class='menu' >
-          <router-link to="/HomeView"
+          <router-link to="/"
                     custom
                     v-slot="{href, navigate}">
-            <div :href="href" @click="navigate" class="menu_logotype"> <h1 class="menu_logotype_text">Logotype</h1></div>
+            <div class="img_lgtp"><img class="img_lgtp_img" src="../img/logo_menu.svg"></div>
+            <div :href="href" @click="navigate" class="menu_logotype"> <h1 class="menu_logotype_text">Спасибо.</h1></div>
           </router-link>
-          <div class="menu_search"><input class="menu_search_input" type="text" placeholder="Найти услугу..."></div>
+          <div class="menu_search"><input class="menu_search_input" type="text" placeholder="Найти услугу..." v-model="query" @input="performSearch">
+            <div class="search_results" v-if="showResults">
+            <ul>
+              <li class="search_result_item" v-for="result in searchResults" :key="result.id" 
+              @click="openServicePage(result)"
+              @mouseover="select_ad(result)"
+              @mouseout="unselect_ad(result)"
+              v-bind:class="{active_result: result.isActive, premium_result: result.premium}">
+                {{ result.title }}
+              </li>
+            </ul>
+          </div></div>
+          
           <div class="menu_services" @click="service">
             <router-link to="/AllServicesView"
                     custom
@@ -23,10 +36,11 @@
 
           <div class="menu_profile">
               <div   @click="showMenu = !showMenu"  class="menu_profile_avatar">
+                <img class="menu_profile_avatar_img" v-if="infoUser.name" src="../img/groot.png">
                 <div v-if="showMenu" class="vertical-menu">
                   <ul>
-                      <li><a :href="href" @click="navigator">{{name || `Войти`}}</a></li>
-                    <li><a href="#" @click="logout">Выйти</a></li>
+                      <li><a :href="href" @click="navigator">{{"Профиль" || `Войти`}}</a></li>
+                    <li><a href="#" @click="username">Выйти</a></li>
                   </ul>
                 </div>
               </div>
@@ -53,15 +67,15 @@
                     <h4 class="c-nav-tool_title">Меню</h4>
                     <ul class="c-nav-tool_list">
                       <li>
-                        <a href="../views/HomeView" class="c-link">Главная</a>
+                        <a href="../" class="c-link">Главная</a>
                       </li>
 
                       <li>
-                        <a href="/pages/about-us" class="c-link">Все услуги</a>
+                        <a href="../AllServicesView" class="c-link">Все услуги</a>
                       </li>
 
                       <li>
-                        <a href="/blogs/community" class="c-link">Личный кабиент</a>
+                        <a href="../UserView" class="c-link">Личный кабиент</a>
                       </li>
                       <li>
                         <a href="#" class="c-link">О нас</a>
@@ -103,7 +117,7 @@
             </div>
           </div>
           <div class="footer_copyright">
-            <p>&copy; 2023 Наше название сайта.</p>
+            <p>&copy; 2023 За cпасибо.</p>
           </div>
         </div>
       </footer>
@@ -112,43 +126,158 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
+import {getUserInfo} from '../store/userInfo.js'
+import { mapState } from 'vuex';
+import axios from 'axios'
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
+
+
+
     export default{
+      
       data() {
+        
         return {
           showMenu: false,
+          isActive: false,
           showModal: false,
           prevScrollPos: 0, 
-          menuVisible: true
+          menuVisible: true,
+          username: '',
+          query: '',
+          searchResults: [],
+          showResults: false // Показывать или скрывать результаты
+
+          
         }
       } ,
+
+   
 
       async mounted(){
           if(!Object.keys(this.$store.getters.info).length){
             await this.$store.dispatch('fetchInfo')
           }
-          this.$store.dispatch('idServices')
+            this.$store.dispatch('allServices')
+            
+
+
           
       },
       computed: {
-        name(){
-          return this.$store.getters.info.name
-        },
         service(){
-          return this.$store.getters.info.service
+    for(let i = 0; this.$store.getters.serviceInfo.length> i; i++){
+      const imageName = this.$store.getters.serviceInfo[i].image;
+      const imageUrl = `http://localhost:5050/${imageName}`;
+      this.$store.getters.serviceInfo[i].image = imageUrl
+
+    }
+    let services = [];
+    for(let i=0;  this.$store.getters.serviceInfo.length> i; i++){
+      if(this.$store.getters.serviceInfo[i].approved){
+        const service = this.$store.getters.serviceInfo[i]
+        const dateString = service.createdAt; // Получаем строку с датой
+
+        const date = new Date(dateString); // Создаем объект Date из строки
+
+        const year = date.getFullYear();
+        const month = date.toLocaleString("default", { month: "long" });
+        const formattedMonth = month.charAt(0).toUpperCase() + month.slice(1); // Написание месяца с большой буквы
+        const day = date.getDate();
+
+        const formattedDate = `${formattedMonth}, ${day}`; // Формируем строку в нужном формате
+
+        service.createdAt = formattedDate;
+        services.push(service)
+      }
+    }
+    console.log(services.reverse())
+    return services.reverse()
+  },
+        infoUser(){
+          return this.$store.getters.info
         },
 
+
       },
+
+      
+
       methods: {
+        select_ad(result) {
+          result.isActive = true
+        },
+        unselect_ad(result) {
+          result.isActive = false
+        },
+
+        openServicePage(result){
+          this.showResults = false;
+          this.query =''
+          this.$router.push({
+          path: `/ServiceView/${result.serviceId}`,
+          query:{
+            userId:result.userId,
+            title: result.title,
+            city: result.city,
+            description: result.description,
+            selectedCategory: result.category.title,
+            image: result.image,
+            trade: result.trade,
+            addDate: result.addDate,
+            name: result.author.name,
+            phone: result.author.phone,
+            vk: result.author.vk,
+            telegram: result.author.telegram,
+            whatsapp: result.author.whatsapp,
+            createdAt:result.createdAt
+
+              }
+            })
+        },
+       
+        test(){
+          console.log(this.service)
+        },
+        logincheck(){
+          console.log(this.infoUser)
+          
+
+        },
+        hideSearchResults(event) {
+      const clickedInsideSearch = event.target.closest('.menu_search') !== null;
+      if (!clickedInsideSearch) {
+        // Клик был сделан вне области формы поиска, скрываем результаты
+        this.searchResults = [];
+        this.showResults = false;
+        this.query =''
+      }
+    },
+
+        performSearch() {
+          this.showResults = true;
+          const searchQuery = this.query.toLowerCase(); // Приводим запрос к нижнему регистру
+
+      // Фильтрация элементов, соответствующих запросу
+      this.searchResults = this.service.filter(item => {
+        return item.title.toLowerCase().includes(searchQuery);
+      });
+
+      // Обработка результатов поиска
+      console.log(this.searchResults);
+    },
+
         navigator(){
-          if(this.name){
-            this.$router.push('/ServiceView')
+          if(this.infoUser.name){
+            this.$router.push('/UserView')
           } else {
             this.$router.push('/LoginView')
           }
         },
         async logout() {
-          await this.$store.dispatch('logout')
-          this.$router.push('/LoginView?message=logout')
+          Cookies.remove()
         }, 
   
       }
@@ -172,7 +301,44 @@
     min-height: 100vh; 
 
   }
-  
+  .search_results {
+    margin-left: auto;
+    margin-right: auto;
+  /* background-color: #f3f3f3; */
+  text-align: center;
+  padding: 5px;
+   border-radius: 20px;
+  /* border: 1px solid #2a2a2a;  */
+  font-size: 1em;
+  width: 60%;
+
+}
+.active_result{
+
+  background-color: #3b80b8;
+
+
+}
+
+.search_result_item {
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #f3f3f3;
+  border: 2px solid #2a2a2a;
+  color: #2a2a2a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+
+}
+
+.search_result_item:hover{
+  background-color: #3b80b8;
+  border: none;
+  color: #f3f3f3;
+
+}
+
   .menu{
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -186,7 +352,7 @@
     height: 8vh;
     grid-template-rows: 100%;
     grid-template: 
-    [start] 'logotype search allServices addService profile' 100% [row-end] /25% 41% 13% 13% 8%
+    [start] 'img logotype search allServices addService profile' 100% [row-end] /10% 15% 41% 13% 13% 8%
     ;
     background-color: #2a2a2a;
     margin-left: 5%;
@@ -194,15 +360,30 @@
     box-shadow: 0 0 5px #151515;
     box-shadow: 0 0 5px #151515;
   }
+    .img_lgtp{
+      margin-left: 60px;
+      grid-area: img;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      cursor: pointer;
 
+    }
+    .img_lgtp_img{
+      
+      height: 60%;
+      margin: auto;
+      
+
+    }
     .menu_logotype{
       display: grid;
       grid-area: logotype;
-
       grid-template-columns: 100%;
       grid-template-rows: 100%;
-      text-align: center;
+      display: flex;
       align-items: center;
+      justify-content: flex-start;
     }
     .menu_logotype_text{
       color: #f3f3f3;
@@ -245,12 +426,19 @@
       text-align: center;
       align-items: center;
       color: #f3f3f3;
+      cursor: pointer;
+      transition: font-weight 0.3s ease;
+      transition: font-size 0.3s ease;
+
+
+    }
+    .menu_services:hover{
+      font-size: 1.2em;
+      font-weight: bold;
+      /* color: #3b80b8; */
     }
     .menu_services p {
-      /* margin: 0 5px 0 5px;
-      border-radius: 10px;
-      border: 1px solid black;
-      padding: 8px; */
+      
     }
     .menu_addServices{
       display: grid;
@@ -276,7 +464,13 @@
       padding: 8px;
       border-radius: 10px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      transition: border-color 0.3s ease;
 
+    }
+    .menu_addServices_text:hover{
+      background-color: #3b80b8;
+      border-color: #3b80b8;
     }
     
     .menu_profile{
@@ -295,6 +489,13 @@
       margin-left: 20%;
       background: #f3f3f3;
       border-radius: 50%;
+      /* overflow: hidden; */
+    }
+    .menu_profile_avatar_img{
+      width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 50%;
     }
 
     .vertical-menu {

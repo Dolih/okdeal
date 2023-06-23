@@ -3,134 +3,52 @@
     <div id="loader"></div>
   </div>
   <div v-else>
-    <div class="container">
-    <div  class="content_categories">
-      <div ref="myEl" class="content_categories_el"
-      v-bind:class="{active_categories: item.isActive}, {active_category: item.isActiveCt}"
-
-      @mouseover="select_ad(item)"
-      @mouseout="unselect_ad(item)"
-      @click="viewCtgry(item)"
-      :item="item"
-      v-for="item in allCategories"
-      >
+    <div class="container_hm">
+      <div class="title_hm"><h1 class="title_hm_text">Спасибо.</h1></div>
+      <div class="dscrp_hm"><p class="dscrp_hm_text"><b>Выбирайте</b> подходящие услуги <br/> <b>Предлагайте</b> свои взамен</p></div>
       
-        <img class="content_categories_el_img" 
-        :src=" loaded ? item.img : placeholderURL"
-        @load="onImageLoad"
-        >
-        <p>{{item.nameCt}}</p>
-      </div>
+      <div class="invite_hm" >
+        <div class="menu_addServices"><router-link to="/RegisterView"
+                    custom
+                    v-slot="{href, navigate}"
+                    ><button :href="href" @click="navigate" class="invite_hm_btn">Присоединиться</button></router-link></div></div>
+      <div class="about_hm"><a href="#down"><button class="about_hm_btn">Подробнее</button></a></div>
+      <div class="img_hm"><img class="img_hm_img" src="../img/logo.svg"></div>
     </div>
-    <div class="content_popular">
-      <div class="content_popular_header">
-        🔥 Популярные объявления
-      </div>
+    <div class="arrow bounce"></div>
+    <div>
       
-        <div class="content_popular_ads"
-      > 
-          <div class="content_popular_ad"
-          :item="item"
-          v-if="slctCtgry"
-          v-for="item in services" :key="item.id"
-          v-bind:class="{active_ad: item.isActive}"
-          @mouseover="select_ad(item)"
-          @mouseout="unselect_ad(item)"
-          :href="href" @click="openServicePage(item)"
-          >
-            <div class="ad_name"
-            v-bind:class="{active_ad_name: item.isActive}"
-            >
-            
-              <div class="ad_name_text"
-              v-bind:class="{active_name_text: item.isActive}"
-              > {{ item.service }}</div>
-
-            </div>
-            <img class="ad_img" 
-            :src="loaded ? item.imageURL : placeholderURL" 
-            v-bind:class="{ad_display: !item.isActive} "
-            @load="onImageLoad"
-            />
-            <div class="ad_hint"
-            v-bind:class="{ad_display: item.isActive}"
-            >
-              <div class="ad_hint_header">Услуги взамен:</div>
-              <div class="ad_hint_text"
-              > 
-                {{item.trade}} 
-              </div>
-            </div>
-            <div class="ad_info"
-            v-bind:class="{active_ad_info: item.isActive}"
-            >
-              <div class="ad_date"> {{ item.addDate }} </div>
-            </div> 
-            <div class="ad_like"
-            v-bind:class="{active_ad_like: item.isActive}"
-            >
-              <img class="ad_like_img" src="../img/like.svg">
-            </div>
-
-          </div>
-          <div class="content_popular_ad"
-          :item="item"
-          v-else
-          v-for="item in service"
-          v-bind:class="{active_ad: item.isActive}"
-          @mouseover="select_ad(item)"
-          @mouseout="unselect_ad(item)"
-          :href="href" @click="openServicePage(item)"
-          >
-            <div class="ad_name"
-            v-bind:class="{active_ad_name: item.isActive}"
-            >
-              <div class="ad_name_text"
-              v-bind:class="{active_name_text: item.isActive}"
-              >{{ item.service }}</div>
-            </div>
-            <img class="ad_img" 
-            :src="loaded ? item.imageURL : placeholderURL"
-            v-bind:class="{ad_display: !item.isActive} "
-            @load="onImageLoad"
-            />
-            <div class="ad_hint"
-            v-bind:class="{ad_display: item.isActive}"
-            >
-              <div class="ad_hint_header">Услуги взамен:</div>
-              <div class="ad_hint_text"
-              > 
-                {{item.trade}} 
-              </div>
-            </div>
-            <div class="ad_city"
-            >
-              г. {{ item.city }}
-            </div>
-            <div class="ad_info"
-            v-bind:class="{active_ad_info: item.isActive}"
-            >
-              <div class="ad_date"> {{ item.addDate }} </div>
-            </div> 
-            <div class="ad_like"
-            v-bind:class="{active_ad_like: item.isActive}"
-            >
-              <img class="ad_like_img" src="../img/like.svg">
-            </div>
-
-          </div>
-        
-        </div>
-    </div>
   </div>
+    <div class="container_dscrp_hm">
+      <div class="title_dscrp_hm">
+        <h2 class="title_dscrp_hm_text"><a name="down"></a>Как <br/> присоединиться?</h2>
+      </div>
+      <div class="img_dsc img_dsc_1"><img class="img_dsc_img" src="../img/reg.svg"></div>
+      <div class="dsc dsc_1">
+          <p class="num_txt">1</p>
+          <p class="dscrp_txt" >Зарегистрируйтесь на сайте. Введите свои настоящее имя и фамилию и укажите контакты для связи с Вами</p>
+
+      </div>
+      <div class="img_dsc img_dsc_2"><img class="img_dsc_img" src="../img/crt.svg"></div>
+      <div class="dsc dsc_2">
+          <p class="num_txt">2</p>
+          <p class="dscrp_txt">Создайте объявление и укажите, что вы можете предложить и что хотите получить взамен.
+          Или просто выберите любое подходящее объявление и свяжитесь с участником</p>
+      </div>
+      <div class="img_dsc img_dsc_3"><img class="img_dsc_img" src="../img/logo.svg"></div>
+      <div class="dsc dsc_3">
+          <p class="num_txt">3</p>
+          <p class="dscrp_txt">Договоритесь с участником любым удобным способом и не забудьте поставить оценку!</p>
+      </div>  
+    </div>
   </div>
 </template>
 
 <script>
 
-
 export default {
 components: { 
+
 },
 data(){
 return {
@@ -138,7 +56,13 @@ return {
   isActiveCt: false,
   slctCtgry: false,
   loaded: true,
-  placeholderURL: '../img/ads.jpeg',
+  placeholderURL: '',
+  // items: [
+  //       { image: allCategories.image},
+  //       { image: 'slide2.jpg' },
+  //       { image: 'slide3.jpg' }
+  //     ],
+      currentIndex: 0,
 
   services: [
     
@@ -152,6 +76,7 @@ return {
 },
 
 async mounted (){
+  setInterval(this.slideNext, 3000)
   Promise.all([
   this.$store.dispatch('allServices'),
   this.$store.dispatch('allCategories')
@@ -162,48 +87,81 @@ async mounted (){
         console.error('Ошибка при загрузке данных:', error);
         this.isLoading = false; 
       });
+
+
 },
 
 computed: {
-  service(){
-    const months = [
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-      ];
-    for(let i = 0; this.$store.getters.serviceInfo.length>i; i++){
-      if (this.$store.getters.serviceInfo[i].addDate) {
-    const dateParts = this.$store.getters.serviceInfo[i].addDate.split('.');
-    const day = dateParts[0];
-    const month = months[Number(dateParts[1]) - 1];
-    this.$store.getters.serviceInfo[i].addDate = `${day} ${month}`
-  
-  }}
-    return this.$store.getters.serviceInfo
+  containerStyles() {
+      return {
+        transform: `translateX(-${this.currentIndex * 100}%)`
+      };
+    },
     
+  // service(){
+  //   const months = [
+  //       "января",
+  //       "февраля",
+  //       "марта",
+  //       "апреля",
+  //       "мая",
+  //       "июня",
+  //       "июля",
+  //       "августа",
+  //       "сентября",
+  //       "октября",
+  //       "ноября",
+  //       "декабря"
+  //     ];
+  //   for(let i = 0; this.$store.getters.serviceInfo.length>i; i++){
+  //     if (this.$store.getters.serviceInfo[i].addDate) {
+  //   const dateParts = this.$store.getters.serviceInfo[i].addDate.split('.');
+  //   const day = dateParts[0];
+  //   const month = months[Number(dateParts[1]) - 1];
+  //   this.$store.getters.serviceInfo[i].addDate = `${day} ${month}`
+  
+  // }}
+  //   return this.$store.getters.serviceInfo
+    
+  // },
+
+ 
+  service(){
+    for(let i = 0; this.$store.getters.serviceInfo.length> i; i++){
+      const imageName = this.$store.getters.serviceInfo[i].image;
+      const imageUrl = `http://localhost:5050/${imageName}`;
+      this.$store.getters.serviceInfo[i].image = imageUrl
+
+    }
+    let services = [];
+    for(let i=0;  this.$store.getters.serviceInfo.length> i; i++){
+      if(this.$store.getters.serviceInfo[i].approved){
+        const service = this.$store.getters.serviceInfo[i]
+        services.push(service)
+      }
+    }
+    console.log(services[1].premium)
+    return services.reverse()
   },
-  allCategories() {
+
+   allCategories() {
+    for(let i = 0; this.$store.getters.categories.length> i; i++){
+      const imageName = this.$store.getters.categories[i].image;
+      const imageUrl = `http://localhost:5050/${imageName}`;
+      this.$store.getters.categories[i].image = imageUrl
+
+    }
+    
     return this.$store.getters.categories
   },
-  idService(){
-    return this.$store.getters.serviceId
-  },
-  name(){
-          return this.$store.getters.info.name
-        },
+  
   
 },
 
 methods: {
+  slideNext() {
+      // this.currentIndex = (this.currentIndex + 1) % this.item.length;
+    },
 select_ad(item) {
   item.isActive = true
 },
@@ -220,30 +178,33 @@ viewCtgry(item){
     if(this.allCategories[i].isActiveCt == true){
       this.allCategories[i].isActiveCt = false
       item.isActiveCt = false
+
     }
   }
+
   this.services = []
   
   for(let i = 0; this.service.length > i; i++){
-    if(item.nameCt == this.service[i].selectedCategory){
+    if(item.title == this.service[i].category.title){
       this.isActiveCt = true
       let srv = {
         userId:this.service[i].userId,
-        serviceId:this.service[i].serviceId,
-        service: this.service[i].service,
+        id:this.service[i].id,
+        title: this.service[i].title,
         city: this.service[i].city,
         description: this.service[i].description,
-        selectedCategory: this.service[i].selectedCategory,
-        imageURL: this.service[i].imageURL,
+        category: this.service[i].category,
+        image: this.service[i].image,
         trade: this.service[i].trade,
-        addDate: this.service[i].addDate,
-        phone: this.service[i].phone
+        author: this.service[i].author,
+        premium: this.service[i].premium
       }
-      console.log(this.service[i].addDate)
       item.isActiveCt = true
       this.services.push(srv)
-      
-    } else if(item.nameCt=="Все объявления"){this.slctCtgry = false}
+      console.log(this.services[0].author)
+    } else if (item.nameCt=="Все объявления"){
+      this.slctCtgry = false
+    }
   }
 },
 openServicePage(item){
@@ -251,14 +212,15 @@ openServicePage(item){
     path: `/ServiceView/${item.serviceId}`,
     query:{
       userId:item.userId,
-      service: item.service,
+      title: item.title,
       city: item.city,
       description: item.description,
-      selectedCategory: item.selectedCategory,
-      imageURL: item.imageURL,
+      selectedCategory: item.category.title,
+      image: item.image,
       trade: item.trade,
       addDate: item.addDate,
-      phone: item.phone
+      name: item.author.name,
+      phone: item.author.phone
     }
   })
 
@@ -278,359 +240,225 @@ body{
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
+  /* background: linear-gradient(-45deg, #5DE6DE, #B58ECC, #5DE6DE, #B58ECC);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh; */
 }
-.container{
-  margin: 12vh auto 0 auto;
-  padding: 0;
+.carousel {
+  width: 100%;
+  overflow: hidden;
 }
 
-.content_categories{
-margin-top: 50px;
-margin-left: auto;
-margin-right: auto;
-width: 70vw;
-overflow-x: scroll;
-white-space: nowrap;
-border-radius: 20px;
+.carousel-container {
+  display: flex;
+  transition: transform 0.5s ease;
+}
 
+.carousel-item {
+  flex: 0 0 100%;
+  width: 100%;
+}
+a{
+  text-decoration: none;
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.container_hm{
+  margin: 15vh auto 0 auto;
+  /* border: 2px solid #2a2a2a; */
+  padding: 20px 40px;
+  border-radius: 20px;
+  background: linear-gradient(-45deg, #F9D976, #F39F86, #F9D976, #F39F86);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+  
+	height: 100vh;
+  display: grid;
+  height: auto;
+  width: 70vw;
+  grid-template: 
+  [start] 'title  title img  '  auto  [row2   ]
+  [row2 ] 'dscrp  dscrp img  '  auto  [row3   ]
+  [row3 ] 'invite about img  '  auto  [row-end] /23% 37% 40% 
+  ;
+}
 
+.title_hm{
+  grid-area: title;
 }
-.content_categories_el{
-display: inline-block;
-flex-shrink: 0;
-margin-left: 10px;
-margin-right: 10px;
-background-color: #3b80b8;
-cursor: pointer;
-width: 180px;
-height: 73px;
-border-radius: 20px;
-
+.title_hm_text{
+  color: #2a2a2a;
+  font-size: 4em;
+  /* text-shadow:  3px 3px 1px rgba(0, 0, 0, 0.144); */
 }
-.active_categories{
-background-color: #2a2a2a;
-animation-name: animation_active_categories;
-animation-duration: 400ms;
+.dscrp_hm{
+  grid-area: dscrp;
 }
-.no_active_category{
-background-color: #3b80b8;
+.dscrp_hm_text{
+  font-size: 1.8em;
+  padding: 10px 0 10px 0;
+  color: #2a2a2a;
 }
-.active_category{
-background-color: #2a2a2a;
+.invite_hm{
+  grid-area: invite;
 }
-@keyframes animation_active_categories{
-0%{
-  background-color: #3b80b8;
-}
-100%{
-  background-color: #2a2a2a;
-}
-}
-.content_categories_el p{
-color: #f3f3f3;
-text-align: center;
-font-size: 0.8em;
-/* font-weight:600; */
-}
-.content_categories_el_img{
-display: block;
-margin: 5px auto 5px auto;
-width: 40px;
-}
-.content_popular{
-margin: 30px 12% 0 12%;
-}
-.content_popular_header{
-color: #030303;
+.invite_hm_btn{
+  margin-top: 20px;
   font-size: 1.5em;
-  /* font-weight: bold; */
-}
-.content_popular_ads{
-display: grid;
-grid-template-columns: 25% 25% 25% 25%;
-grid-template-rows: auto;
-margin-top: 20px;
-height: 100%;
-
-}
-.content_popular_ad{
-display: grid;
-grid-template: 
-[start] 'img  img  ' 65% [row2   ]
-[row2 ] 'name name ' 15% [row3   ]
-[row3 ] 'city like ' 10% [row4   ]
-[row4 ] 'date like ' 10% [row-end] /60% 40% 
-;
-background-color: #2a2a2a;
-border-radius: 20px;
-/* border: 1px solid #2a2a2ab9; */
-height: 30vh;
-border-radius: 20px;
-margin: 10px;
-position: relative;
-z-index: 2;
-cursor: pointer;
-
-/* box-shadow: 0 0 5px #151515;
-  box-shadow: 0 0 5px #151515; */
-
-}
-@keyframes active_ad_bg{
-  0%{
-    background-color: #2a2a2a;
-
-  }
-  100%{
-    background-color: #3b80b8;
-  }
-}
-.active_ad{
-background-color: #3b80b8;
-animation-name: active_ad_bg;
-animation-duration: 400ms;
-}
-
-.ad_name{
-position: relative;
-z-index: 1;
-grid-area: name;
-display: flex;
-/* width: 90%; */
-
-margin: -15% 0 10% 0;
-border-radius: 20px;
-/* background-color: #CA4433; */
-background-color: #f3f3f3;
-border: 4px solid #2a2a2a;
-/* box-shadow: 0 0 5px #090A0A;
-box-shadow: 0 0 5px #090A0A; */
-
-}
-
-.ad_name_text{
-margin: auto; 
-padding: 0 20px 0 20px;
-font-size: 0.9em;
-font-weight: 500;
-color: #2a2a2a; 
-text-align: center;
-}
-/* .active_name_text{
-padding: 0 30px 0 30px;
-
-} */
-.ad_name_img{
-  display: block;
-  width: 10%;
-}
-
-.ad_img{
-grid-area: img;
-width: 100%;
-height: 95%;
-/* margin: 5% 5% 0 5%; */
-border-radius: 20px 20px 3px 3px;
-object-fit: cover;
-}
-.ad_hint{
-display: none;
-grid-area: img;
-margin: 0 0 4% 0;
-border-radius: 20px 20px 3px 3px;
-padding: 10px;
-background-color: #000000a9;
-}
-
-.ad_hint_header{
-color: #f3f3f3;
-text-align: center;
-font-weight: bold;
-font-size: 0.9em;
-padding-bottom: 10px;
-}
-.ad_hint_text{
-color: #F6F3F3;
-font-size: 0.9em;
-text-align: center;
-
-}
-.ad_display{
-display:block;
-animation-name: active_ad_hint;
-animation-duration: 400ms;
-}
-@keyframes active_ad_hint{
-0%{
-  opacity: 0;
-
-}
-100%{
-  opacity: 1;
-}
-}
-.ad_city{
-  grid-area: city;
-  /* margin: 0 0 -20% 0; */
-/* padding-left: 17%; */
-  margin-top: -7%;
-  padding-left: 20px;
-
   color: #f3f3f3;
-  font-size: 0.8em;
+  background-color: #3b80b8;
+  border: 2px solid #3b80b8;
+  border-radius: 20px;
+  padding: 10px 15px;
+  margin-right: 20px;
+  transition: border-color 0.6s ease;
 
 }
-.ad_info{
-grid-area: date;
-display: flex;
-margin-top: -7%;
-padding-left: 20px;
-
-/* margin: 10% 5% 7% 10%; */
-border-radius: 20px;
-/* background-color: #437FB1; */
+.invite_hm_btn:hover{
+  border-color: #2a2a2a;
 }
-/* .active_ad_info{
-margin: 10% 20% 7% 10%;
-} */
-.ad_date{
-
-/* margin: -15% auto auto auto; */
-color: #f3f3f3;
-font-size: 0.8em;
-
+.about_hm{
+  grid-area: about;
 }
-.ad_like{
-  
-grid-area: like;
-/* background-color: #437FB1; */
-border-radius: 20px;
-}
-/* .active_ad_like{
-margin: 15% 15% 10% 0;
-background-color: #294F74;
-animation-name: animation_ad_like;
-animation-duration: 400ms;
-} */
-/* @keyframes animation_ad_like{
-0%{
-  margin: 15% 15% 10% 20%;
-  background-color: #437FB1;
-}
-100%{
-  margin: 15% 15% 10% 0;
-  background-color: #294F74;
-}
-} */
-.ad_like_img{
-display: block;
-margin: auto;
-width: 40%;
-}
-/* .ad_name{
-color: white;
-font-weight: bold;
-font-size: 0.9em;
-padding: 15px;
-} */
-
-@media (min-width:1900px){
-  .content_categories{
-    margin-left:auto;
-    margin-right: auto;
-    width: 60vw;
-  }
-  .content_popular{
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-}
-@media (max-width:1010px){
-.grid{
-  /* grid-template-rows: 8vh auto; */
-  
-}
-.menu_search_input{
-  height: 55%;
-  font-size: 0.7em;
-}
-.menu_logotype_text{
+.about_hm_btn{
+  margin-top: 20px;
   font-size: 1.5em;
+  color: #2a2a2a;
+  background-color: #f3f3f300;
+  border: 2px solid #2a2a2a;
+  border-radius: 20px;
+  padding: 10px 15px;
+  transition: background-color 0.6s ease;
+  transition: border-color 0.6s ease;
+
+
 }
-.menu_services, .menu_addServices{
-  font-size: 1em;
+.about_hm_btn:hover{
+  background-color: #3b80b8;
+  border-color: #3b80b8;
+  color: #f3f3f3;
 }
-.menu_profile_avatar{
-  width: 35px; 
-  height: 35px;
-  margin-left: 10%;
-}
-.content_categories{
-  width: 80vw
-}
-.content_categories_el{
-  height: 60px
-}
-.content_categories_el p{
-  font-size: 0.9em;
-}
-.content_popular{
-margin: 50px 10% 0 10%;
-}
-.content_popular_header{
-  margin-left: 10%;
-  margin-right: 10%;
-}
-.content_popular_ads{
-grid-template-columns: 50% 50%;
-grid-template-rows: auto;
-margin-left: 10%;
-margin-right: 10%;
-}
-.content_popular_ad{
-  min-height: 300px;
-}
-.content_categories_el_img{
-  height: 50%;
-}
-} 
-@media (max-width:420px){
-.content_categories{
-  width: 100vw;
-  border-radius: 0;
+.img_hm{
+  grid-area: img;
   
 }
-.content_categories_el{
-  margin-left: 2%;
-  margin-right: 2%;
-}
-.content_categories_el p{
-  font-size: 0.7em;
-}
-.content_popular_ads{
-grid-template-columns: 50% 50%;
-grid-template-rows: auto;
-margin-left: 00%;
-margin-right: 00%;
-}
-.content_popular_header{
-  margin-left: 10px;
-  font-size: 1.2em;
-}
-.content_popular{
-margin: 25px 0% 0 0%;
-}
-.content_popular_ad{
-  min-height: 200px;
-  margin: 2%;
-}
-.ad_name_text{
-  font-size: 0.7em;
-}
-.ad_date, .ad_city{
-  font-size: 0.6em;
-}
+.img_hm_img{
+ width: 100%;
 }
 
+.arrow
+{
+  position: relative;
+  bottom: -3rem;
+  left: 50%;
+  margin-left:-20px;
+  width: 40px;
+  height: 40px;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI1MTIiIGlkPSJzdmcyIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIiB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzIGlkPSJkZWZzNCIvPjxnIGlkPSJsYXllcjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTU0MC4zNjIyKSI+PHBhdGggZD0ibSAxMjcuNDA2MjUsNjU3Ljc4MTI1IGMgLTQuOTg1MywwLjA3ODQgLTkuOTEwNzcsMi4xNjMwOCAtMTMuNDM3NSw1LjY4NzUgbCAtNTUsNTUgYyAtMy42MDA1NjUsMy41OTkyNyAtNS42OTY4ODMsOC42NTg5NSAtNS42OTY4ODMsMTMuNzUgMCw1LjA5MTA1IDIuMDk2MzE4LDEwLjE1MDczIDUuNjk2ODgzLDEzLjc1IEwgMjQyLjI1LDkyOS4yNSBjIDMuNTk5MjcsMy42MDA1NiA4LjY1ODk1LDUuNjk2ODggMTMuNzUsNS42OTY4OCA1LjA5MTA1LDAgMTAuMTUwNzMsLTIuMDk2MzIgMTMuNzUsLTUuNjk2ODggTCA0NTMuMDMxMjUsNzQ1Ljk2ODc1IGMgMy42MDA1NiwtMy41OTkyNyA1LjY5Njg4LC04LjY1ODk1IDUuNjk2ODgsLTEzLjc1IDAsLTUuMDkxMDUgLTIuMDk2MzIsLTEwLjE1MDczIC01LjY5Njg4LC0xMy43NSBsIC01NSwtNTUgYyAtMy41OTgxNSwtMy41OTEyNyAtOC42NTA2OCwtNS42ODEyNyAtMTMuNzM0MzgsLTUuNjgxMjcgLTUuMDgzNjksMCAtMTAuMTM2MjIsMi4wOSAtMTMuNzM0MzcsNS42ODEyNyBMIDI1Niw3NzguMDMxMjUgMTQxLjQzNzUsNjYzLjQ2ODc1IGMgLTMuNjY2NzgsLTMuNjY0MjMgLTguODQ4MDEsLTUuNzY0NDIgLTE0LjAzMTI1LC01LjY4NzUgeiIgaWQ9InBhdGgzNzY2LTEiIHN0eWxlPSJmb250LXNpemU6bWVkaXVtO2ZvbnQtc3R5bGU6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC13ZWlnaHQ6bm9ybWFsO2ZvbnQtc3RyZXRjaDpub3JtYWw7dGV4dC1pbmRlbnQ6MDt0ZXh0LWFsaWduOnN0YXJ0O3RleHQtZGVjb3JhdGlvbjpub25lO2xpbmUtaGVpZ2h0Om5vcm1hbDtsZXR0ZXItc3BhY2luZzpub3JtYWw7d29yZC1zcGFjaW5nOm5vcm1hbDt0ZXh0LXRyYW5zZm9ybTpub25lO2RpcmVjdGlvbjpsdHI7YmxvY2stcHJvZ3Jlc3Npb246dGI7d3JpdGluZy1tb2RlOmxyLXRiO3RleHQtYW5jaG9yOnN0YXJ0O2Jhc2VsaW5lLXNoaWZ0OmJhc2VsaW5lO2NvbG9yOiMwMDAwMDA7ZmlsbDojMjIyMjIyO2ZpbGwtb3BhY2l0eToxO2ZpbGwtcnVsZTpub256ZXJvO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDozOC44ODAwMDEwNzttYXJrZXI6bm9uZTt2aXNpYmlsaXR5OnZpc2libGU7ZGlzcGxheTppbmxpbmU7b3ZlcmZsb3c6dmlzaWJsZTtlbmFibGUtYmFja2dyb3VuZDphY2N1bXVsYXRlO2ZvbnQtZmFtaWx5OlNhbnM7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjpTYW5zIi8+PC9nPjwvc3ZnPg==);
+  background-size: contain;
+}
+
+.bounce {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+.container_dscrp_hm{
+  margin: 8vh auto 0 auto;
+  /* padding: 20px 40px; */
+  
+  display: grid;
+  height: auto;
+  width: 60vw;
+  grid-template: 
+  [start] 'title_d title_d'    auto  [row2   ]
+  [row2 ] 'img_dsc_1 dsc_1'    auto  [row3   ]
+  [row3 ] 'img_dsc_2 dsc_2'    auto  [row4   ] 
+  [row4]  'img_dsc_3 dsc_3'    auto  [row-end] /30% 70%
+  ;
+}
+
+.title_dscrp_hm{
+  grid-area: title_d;
+  padding-bottom: 40px;
+}
+.title_dscrp_hm_text{
+  color: #2a2a2a;
+  font-size: 2em;
+  /* text-shadow:  3px 3px 1px rgba(0, 0, 0, 0.144); */
+}
+.img_dsc{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+
+}
+.img_dsc_1{
+  grid-area: img_dsc_1;
+}
+.img_dsc_2{
+  grid-area: img_dsc_2;
+}
+.img_dsc_3{
+  grid-area: img_dsc_3;
+}
+.img_dsc_img{
+  width: 50%;
+}
+.dsc_1{
+  grid-area: dsc_1;
+}
+.dsc_2{
+  grid-area: dsc_2;
+}
+.dsc_3{
+  grid-area: dsc_3;
+}
+.dsc{
+  border-radius: 20px;
+  /* border: 2px solid #2a2a2a; */
+  margin-bottom: 50px;
+  background: linear-gradient(-45deg, #F9D976, #F39F86, #F9D976, #F39F86);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+.num_txt{
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1.4em;
+  border-radius: 20px;
+  padding: 10px 20px;
+  
+}
+.dscrp_txt{
+  font-size: 1.4em;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+}
 
 
 

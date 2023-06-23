@@ -1,61 +1,48 @@
-import firebase from 'firebase/app'
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default {
     state: {
-        service: {},
+        service: [],
         serviceInfo: [],
     },
     mutations: {
-        setService(state, service){
+        setService(state, service, imageUrl){
             state.service = service
         },
         clearService(state){
             state.service = {}
         },
-        setServiceIds(state, serviceInfo){
+        setServiceIds(state, serviceInfo, imageUrl){
             state.serviceInfo = serviceInfo
-
+            state.serviceInfo.image = imageUrl
         }
         
     },
     actions: {
-        
-        async idServices({dispatch, commit}) {
-            const uid = await dispatch('getUid')
-            const servicesRef = firebase.database().ref(`users/${uid}/services`);
-            const snapshot = await servicesRef.once('value'); 
-            const services = snapshot.val();
-            const serviceIds = Object.keys(services);
-            let serviceInfo = []     
-            let serviceId = ''           
-            for(let i = 0; i<serviceIds.length; i++){
-                let serviceInf = (await firebase.database().ref(`/users/${uid}/services/${serviceIds[i]}`).once('value')).val()
-                serviceInfo.push(serviceInf)
-
+ 
+        async allServices({commit}){
+            try {
+              const response = await axios.get('http://localhost:5050/posts');
+              const serviceInfo = response.data;
+              commit('setServiceIds', serviceInfo)  
+            } catch(error) {
+              console.log(error)
             }
-            commit('setServiceIds', serviceInfo)  
+
         },
 
-        async allServices({commit}){
-            const usersRef = firebase.database().ref(`users/`)
-            const snapshot = await usersRef.once('value')
-            const users = snapshot.val()
-            const usersIds = Object.keys(users)
-            let serviceInfo = []
-            for (let i=0; i<usersIds.length; i++){
-                const servicesRef = firebase.database().ref(`users/${usersIds[i]}/services`)
-                const snapshot = await servicesRef.once('value')
-                const services = snapshot.val()
-                const serviceIds = Object.keys(services)
-                for(let b = 0; b<serviceIds.length; b++){
-                    let serviceInf = (await firebase.database().ref(`/users/${usersIds[i]}/services/${serviceIds[b]}`).once('value')).val()
-                    serviceInf.serviceId = serviceIds[b]
-                    serviceInf.userId = usersIds[i]
-
-                    serviceInfo.push(serviceInf)
-                    }
+        async adminAllServices({commit}){
+            
+            try {
+                const token = Cookies.get('token');
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+              const response = await axios.get('http://localhost:5050/posts/admin');
+              const serviceInfo = response.data;
+              commit('setServiceIds', serviceInfo)  
+            } catch(error) {
+              console.log(error)
             }
-            commit('setServiceIds', serviceInfo)  
 
         }
     },
